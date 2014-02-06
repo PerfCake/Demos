@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:1.0">
+   <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:1}">
+      <run type="iteration" value="${perfcake.performance.duration:1}"/>
+      <property name="messageNumberingEnabled" value="true" />
+   </generator>
+   <sender class="MongoDBSender">
+      <property name="target" value="localhost:27017"/>
+      <property name="dbName" value="perfcake"/>
+   </sender>
+   <reporting>
+      <reporter class="AverageThroughputReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1" />
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message uri="mongodb-sender-test.xml" />
+   </messages>
+</scenario>
