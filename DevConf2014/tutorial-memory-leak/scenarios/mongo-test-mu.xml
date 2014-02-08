@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:1.0">
+   <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:1}">
+      <run type="time" value="${perfcake.performance.duration:1}"/>
+      <property name="messageNumberingEnabled" value="true" />
+   </generator>
+   <sender class="HTTPSender">
+      <property name="target" value="http://localhost:8080/jboss-javaee6-webapp/rest/members"/>
+      <property name="method" value="PUT"/>
+   </sender>
+   <reporting>
+      <reporter class="AverageThroughputReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000" />
+         </destination>
+         <destination class="CSVDestination">
+            <period type="time" value="1000"/>
+            <property name="path" value="${perfcake.scenario}-${perfcake.run.timestamp}.csv"/>
+         </destination>
+      </reporter>
+      <reporter class="MemoryUsageReporter">
+         <property name="memoryLeakDetectionEnabled" value="true"/>
+         <property name="usedMemoryTimeWindowSize" value="200"/>
+         <property name="memoryLeakSlopeThreshold" value="64"/>
+         <destination class="CSVDestination">
+            <period type="time" value="1000"/>
+            <property name="path" value="${perfcake.scenario}-memory-usage-${perfcake.run.timestamp}.csv"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message uri="mongo-test.xml">
+         <header name="ContentType" value="text/xml"/>
+      </message>
+   </messages>
+</scenario>
