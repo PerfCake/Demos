@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:1.0">
    <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:1}">
-      <run type="iteration" value="${perfcake.performance.duration:1}"/>
+      <run type="time" value="${perfcake.performance.duration:1}"/>
       <property name="messageNumberingEnabled" value="true" />
    </generator>
    <sender class="MongoDBSender">
@@ -11,11 +11,11 @@
    <reporting>
       <reporter class="AverageThroughputReporter">
          <destination class="ConsoleDestination">
-            <period type="iteration" value="1" />
+            <period type="Time" value="1000" />
          </destination>
       </reporter>
    </reporting>
    <messages>
-      <message uri="mongodb-sender-test.xml" />
+      <message uri="mongodb-sender-test" />
    </messages>
 </scenario>
