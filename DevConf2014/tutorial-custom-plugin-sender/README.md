@@ -44,11 +44,11 @@ sed -i -e 's/${plugin.version}/0\.0\.1-SNAPSHOT/g' perfcake-plugin-coolsender/po
 Write CoolSender code
 ---------------------
 * Import perfcake-plugin-coolsender Maven project into Eclipse
-* Create new Java class called org.cool.sender.CoolSender that extends org.perfcake.message.sender.AbstractSender
+* Create new Java class called org.cool.CoolSender that extends org.perfcake.message.sender.AbstractSender
 * Fill in doSend method
 
 ```java
-package org.cool.sender;
+package org.cool;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -60,19 +60,29 @@ import org.perfcake.reporting.MeasurementUnit;
 
 public class CoolSender extends AbstractSender {
 
-    @Override
-	public void init() throws Exception {}
+   private String coolProperty;
 
-	@Override
-	public void close() throws PerfCakeException {}
+   @Override
+   public void init() throws Exception {}
 
-	@Override
-	public Serializable doSend(Message message, Map<String, String> properties,	MeasurementUnit mu) throws Exception {
-		final Serializable msg = message.getPayload();
-		System.out.println("CoolSender: Sending " + msg + " to " + getTarget());
-		return msg;
-	}
-	
+   @Override
+   public void close() throws PerfCakeException {}
+
+   @Override
+   public Serializable doSend(Message message, Map<String, String> properties, MeasurementUnit mu) throws Exception {
+      final String msg = message.getPayload().toString();
+      System.out.println("CoolSender is sending '" + msg + "' with " + coolProperty + " out to " + getTarget() + "!");
+      return msg;
+   }
+
+   public String getCoolProperty() {
+      return coolProperty;
+   }
+
+   public void setCoolProperty(String coolProperty) {
+      this.coolProperty = coolProperty;
+   }
+
 }
 ```
 

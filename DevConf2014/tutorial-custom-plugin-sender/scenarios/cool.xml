@@ -5,8 +5,9 @@
       <run type="time" value="10000"/>
       <property name="threadQueueSize" value="50000"/>
    </generator>
-   <sender class="org.cool.sender.CoolSender">
+   <sender class="org.cool.CoolSender">
       <property name="target" value="Out there!"/>
+      <property name="coolProperty" value="iceCream"/>
    </sender>
    <reporting>
       <reporter class="AverageThroughputReporter">
