@@ -106,17 +106,13 @@ Create scenario that uses CoolSender
    <properties/>
    <generator class="DefaultMessageGenerator" threads="1">
       <run type="time" value="5000"/> <!-- 5s -->
-      <property name="threadQueueSize" value="50000"/>
    </generator>
-   <sender class="org.cool.sender.CoolSender">
+   <sender class="org.cool.CoolSender">
       <property name="target" value="Out there!"/>
+      <property name="coolProperty" value="iceCream"/>
    </sender>
    <reporting>
       <reporter class="AverageThroughputReporter">
-         <destination class="CSVDestination">
-            <period type="time" value="1000"/> <!-- 1s -->
-            <property name="path" value="${perfcake.scenario}-average-throughput-${perfcake.run.timestamp}.csv"/>
-         </destination>
          <destination class="ConsoleDestination">
             <period type="time" value="1000" /> <!-- 1s -->
          </destination>
