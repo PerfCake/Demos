@@ -2,7 +2,7 @@
 <scenario xmlns="urn:perfcake:scenario:1.0">
    <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:1}">
       <run type="time" value="${perfcake.performance.duration:1}"/>
-      <property name="messageNumberingEnabled" value="true" />
+      <property name="messageNumberingEnabled" value="true"/>
    </generator>
    <sender class="MongoDBSender">
       <property name="target" value="localhost:27017"/>
@@ -11,11 +11,15 @@
    <reporting>
       <reporter class="AverageThroughputReporter">
          <destination class="ConsoleDestination">
-            <period type="Time" value="1000" />
+            <period type="time" value="1000"/>
+         </destination>
+         <destination class="CSVDestination">
+            <period type="time" value="1000"/>
+            <property name="path" value="${perfcake.scenario}-${perfcake.run.timestamp}.csv"/>
          </destination>
       </reporter>
    </reporting>
    <messages>
-      <message uri="mongodb-sender-test" />
+      <message uri="mongodb-sender-test"/>
    </messages>
 </scenario>
