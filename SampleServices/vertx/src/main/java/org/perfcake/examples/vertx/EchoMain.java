@@ -40,6 +40,8 @@ public class EchoMain {
       groovyEcho.setVertx(vertx);
       groovyEcho.start();
 
+      System.out.println("Listening at :8080 (Java) and :8181 (Groovy). Hit Ctrl-C to stop...");
+
       System.in.read();
    }
 }
