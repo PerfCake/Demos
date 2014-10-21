@@ -24,6 +24,7 @@ import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.platform.Verticle;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -34,10 +35,12 @@ import java.util.concurrent.Semaphore;
  */
 public class HTTPEchoVerticle extends Verticle {
 
-   static private Map<BadKey, Buffer> register = new HashMap<>();
-   private Semaphore semaphore = new Semaphore(100);
+   static private Map<BadKey, Buffer> register = Collections.synchronizedMap(new HashMap<BadKey, Buffer>());
+   private Semaphore getSemaphore = new Semaphore(100);
+   private Semaphore deleteSemaphore = new Semaphore(100);
    private Random random = new Random();
 
+   // Bad hash key is missing equals and hashCode
    static private class BadKey {
       public final String key;
       public BadKey(String key) {
@@ -45,8 +48,9 @@ public class HTTPEchoVerticle extends Verticle {
       }
    }
 
+   // Max 100 simultaneous requests
    private void get(final HttpServerRequest req, final Buffer body) {
-      if (!semaphore.tryAcquire()) {
+      if (!getSemaphore.tryAcquire()) {
          try {
             try {
                Thread.sleep(random.nextInt(1000));
@@ -54,7 +58,7 @@ public class HTTPEchoVerticle extends Verticle {
                // ignore
             }
          } finally {
-            semaphore.release();
+            getSemaphore.release();
             req.response().end("Done GET.");
          }
       } else {
@@ -64,13 +68,36 @@ public class HTTPEchoVerticle extends Verticle {
       }
    }
 
+   // Just a polite answer
    private void post(final HttpServerRequest req, final Buffer body) {
       req.response().end("<html><body><h1>Hello " + body.toString() + "!</h1></body></html>");
    }
 
+   // Hidden memory leak
    private void put(final HttpServerRequest req, final Buffer body) {
       register.put(new BadKey(req.localAddress().toString()), body);
       req.response().end("Registered body for: " + req.localAddress().toString());
+   }
+
+   // Combines GET and PUT = max requests + memory leak
+   private void delete(final HttpServerRequest req, final Buffer body) {
+      if (!deleteSemaphore.tryAcquire()) {
+         try {
+            try {
+               register.put(new BadKey(req.localAddress().toString()), body);
+               Thread.sleep(random.nextInt(1000));
+            } catch (InterruptedException e) {
+               // ignore
+            }
+         } finally {
+            deleteSemaphore.release();
+            req.response().end("Deleted some more resources. Currently in register: " + register.size());
+         }
+      } else {
+         req.response().setStatusCode(404);
+         req.response().setStatusMessage("Too many connections.");
+         req.response().end();
+      }
    }
 
    public void start() {
@@ -85,6 +112,8 @@ public class HTTPEchoVerticle extends Verticle {
                      post(req, body);
                   } else if ("PUT".equals(req.method().toUpperCase())) {
                      put(req, body);
+                  } else if ("DELETE".equals(req.method().toUpperCase())) {
+                     delete(req, body);
                   } else {
                      req.response().end("<html><body><h1>Hello World!</h1></body></html>");
                   }
