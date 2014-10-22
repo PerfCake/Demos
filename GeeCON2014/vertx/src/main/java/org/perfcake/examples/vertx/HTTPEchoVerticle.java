@@ -36,9 +36,9 @@ import java.util.concurrent.Semaphore;
 public class HTTPEchoVerticle extends Verticle {
 
    static private Map<BadKey, Buffer> register = Collections.synchronizedMap(new HashMap<BadKey, Buffer>());
-   private Semaphore getSemaphore = new Semaphore(100);
-   private Semaphore deleteSemaphore = new Semaphore(100);
-   private Random random = new Random();
+   private static final Semaphore getSemaphore = new Semaphore(100);
+   private static final Semaphore deleteSemaphore = new Semaphore(100);
+   private static final Random random = new Random();
 
    // Bad hash key is missing equals and hashCode
    static private class BadKey {
@@ -48,55 +48,99 @@ public class HTTPEchoVerticle extends Verticle {
       }
    }
 
+   private abstract static class RequestThread implements Runnable {
+
+      protected final HttpServerRequest req;
+      protected final Buffer body;
+
+
+      public RequestThread(final HttpServerRequest req, final Buffer body) {
+         this.req = req;
+         this.body = body;
+      }
+   }
+
    // Max 100 simultaneous requests
-   private void get(final HttpServerRequest req, final Buffer body) {
-      if (getSemaphore.tryAcquire()) {
-         try {
+   private static class GetThread extends RequestThread {
+
+      public GetThread(HttpServerRequest req, Buffer body) {
+         super(req, body);
+      }
+
+      @Override
+      public void run() {
+         if (getSemaphore.tryAcquire()) {
             try {
-               Thread.sleep(random.nextInt(1000));
-            } catch (InterruptedException e) {
-               // ignore
+               try {
+                  Thread.sleep(random.nextInt(1000));
+               } catch (InterruptedException e) {
+                  // ignore
+               }
+            } finally {
+               getSemaphore.release();
+               req.response().end("Done GET.");
             }
-         } finally {
-            getSemaphore.release();
-            req.response().end("Done GET.");
+         } else {
+            req.response().setStatusCode(404);
+            req.response().setStatusMessage("Too many connections.");
+            req.response().end();
          }
-      } else {
-         req.response().setStatusCode(404);
-         req.response().setStatusMessage("Too many connections.");
-         req.response().end();
       }
    }
 
    // Just a polite answer
-   private void post(final HttpServerRequest req, final Buffer body) {
-      req.response().end("<html><body><h1>Hello " + body.toString() + "!</h1></body></html>");
+   private static class PostThread extends RequestThread {
+
+      public PostThread(HttpServerRequest req, Buffer body) {
+         super(req, body);
+      }
+
+      @Override
+      public void run() {
+         req.response().end("<html><body><h1>Hello " + body.toString() + "!</h1></body></html>");
+      }
    }
 
    // Hidden memory leak
-   private void put(final HttpServerRequest req, final Buffer body) {
-      register.put(new BadKey(req.localAddress().toString()), body);
-      req.response().end("Registered body for: " + req.localAddress().toString());
+   private static class PutThread extends RequestThread {
+
+      public PutThread(HttpServerRequest req, Buffer body) {
+         super(req, body);
+      }
+
+      @Override
+      public void run() {
+         register.put(new BadKey(req.localAddress().toString()), body);
+         req.response().end("Registered body for: " + req.localAddress().toString());
+      }
    }
 
    // Combines GET and PUT = max requests + memory leak
-   private void delete(final HttpServerRequest req, final Buffer body) {
-      if (deleteSemaphore.tryAcquire()) {
-         try {
+   private static class DeleteThread extends RequestThread {
+
+      public DeleteThread(HttpServerRequest req, Buffer body) {
+         super(req, body);
+      }
+
+      @Override
+      public void run() {
+         if (deleteSemaphore.tryAcquire()) {
             try {
-               register.put(new BadKey(req.localAddress().toString()), body);
-               Thread.sleep(random.nextInt(1000));
-            } catch (InterruptedException e) {
-               // ignore
+               try {
+                  register.put(new BadKey(req.localAddress().toString()), body);
+                  Thread.sleep(random.nextInt(1000));
+               } catch (InterruptedException e) {
+                  // ignore
+               }
+            } finally {
+               deleteSemaphore.release();
+               req.response().end("Deleted some more resources. Currently in register: " + register.size());
             }
-         } finally {
-            deleteSemaphore.release();
-            req.response().end("Deleted some more resources. Currently in register: " + register.size());
+         } else {
+            req.response().setStatusCode(404);
+            req.response().setStatusMessage("Too many connections.");
+            req.response().end();
          }
-      } else {
-         req.response().setStatusCode(404);
-         req.response().setStatusMessage("Too many connections.");
-         req.response().end();
       }
    }
 
@@ -106,16 +150,22 @@ public class HTTPEchoVerticle extends Verticle {
             req.response().headers().set("Content-Type", "text/html; charset=UTF-8");
             req.bodyHandler(new Handler<Buffer>() {
                public void handle(Buffer body) {
+                  RequestThread thread = null;
+
                   if ("GET".equals(req.method().toUpperCase())) {
-                     get(req, body);
+                     thread = new GetThread(req, body);
                   } else if ("POST".equals(req.method().toUpperCase())) {
-                     post(req, body);
+                     thread = new PostThread(req, body);
                   } else if ("PUT".equals(req.method().toUpperCase())) {
-                     put(req, body);
+                     thread = new PutThread(req, body);
                   } else if ("DELETE".equals(req.method().toUpperCase())) {
-                     delete(req, body);
+                     thread = new DeleteThread(req, body);
                   } else {
                      req.response().end("<html><body><h1>Hello World!</h1></body></html>");
+                  }
+
+                  if (thread != null) {
+                     new Thread(thread).start();
                   }
                }
             });
