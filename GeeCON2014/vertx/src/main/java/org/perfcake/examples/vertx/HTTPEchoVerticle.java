@@ -50,7 +50,7 @@ public class HTTPEchoVerticle extends Verticle {
 
    // Max 100 simultaneous requests
    private void get(final HttpServerRequest req, final Buffer body) {
-      if (!getSemaphore.tryAcquire()) {
+      if (getSemaphore.tryAcquire()) {
          try {
             try {
                Thread.sleep(random.nextInt(1000));
@@ -81,7 +81,7 @@ public class HTTPEchoVerticle extends Verticle {
 
    // Combines GET and PUT = max requests + memory leak
    private void delete(final HttpServerRequest req, final Buffer body) {
-      if (!deleteSemaphore.tryAcquire()) {
+      if (deleteSemaphore.tryAcquire()) {
          try {
             try {
                register.put(new BadKey(req.localAddress().toString()), body);
