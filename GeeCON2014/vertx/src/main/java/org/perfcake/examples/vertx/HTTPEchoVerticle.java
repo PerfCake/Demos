@@ -37,7 +37,7 @@ public class HTTPEchoVerticle extends Verticle {
 
    static private Map<BadKey, Buffer> register = Collections.synchronizedMap(new HashMap<BadKey, Buffer>());
    private static final Semaphore getSemaphore = new Semaphore(100);
-   private static final Semaphore deleteSemaphore = new Semaphore(100);
+   private static final Semaphore putSemaphore = new Semaphore(100);
    private static final Random random = new Random();
 
    // Bad hash key is missing equals and hashCode
@@ -102,9 +102,9 @@ public class HTTPEchoVerticle extends Verticle {
    }
 
    // Hidden memory leak
-   private static class PutThread extends RequestThread {
+   private static class DeleteThread extends RequestThread {
 
-      public PutThread(HttpServerRequest req, Buffer body) {
+      public DeleteThread(HttpServerRequest req, Buffer body) {
          super(req, body);
       }
 
@@ -115,16 +115,16 @@ public class HTTPEchoVerticle extends Verticle {
       }
    }
 
-   // Combines GET and PUT = max requests + memory leak
-   private static class DeleteThread extends RequestThread {
+   // Combines GET and DELETE = max requests + memory leak
+   private static class PutThread extends RequestThread {
 
-      public DeleteThread(HttpServerRequest req, Buffer body) {
+      public PutThread(HttpServerRequest req, Buffer body) {
          super(req, body);
       }
 
       @Override
       public void run() {
-         if (deleteSemaphore.tryAcquire()) {
+         if (putSemaphore.tryAcquire()) {
             try {
                try {
                   register.put(new BadKey(req.localAddress().toString()), body);
@@ -133,7 +133,7 @@ public class HTTPEchoVerticle extends Verticle {
                   // ignore
                }
             } finally {
-               deleteSemaphore.release();
+               putSemaphore.release();
                req.response().end("Deleted some more resources. Currently in register: " + register.size());
             }
          } else {
