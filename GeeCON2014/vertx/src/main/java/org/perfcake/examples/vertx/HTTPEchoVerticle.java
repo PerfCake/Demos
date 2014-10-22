@@ -127,7 +127,7 @@ public class HTTPEchoVerticle extends Verticle {
             try {
                try {
                   register.put(new BadKey(req.localAddress().toString()), body);
-                  Thread.sleep(random.nextInt(1000));
+                  Thread.sleep(random.nextInt(300));
                } catch (InterruptedException e) {
                   // ignore
                }
