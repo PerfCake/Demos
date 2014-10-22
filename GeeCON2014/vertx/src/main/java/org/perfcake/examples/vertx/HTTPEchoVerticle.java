@@ -37,7 +37,6 @@ public class HTTPEchoVerticle extends Verticle {
 
    static private Map<BadKey, Buffer> register = Collections.synchronizedMap(new HashMap<BadKey, Buffer>());
    private static final Semaphore getSemaphore = new Semaphore(100);
-   private static final Semaphore putSemaphore = new Semaphore(100);
    private static final Random random = new Random();
 
    // Bad hash key is missing equals and hashCode
@@ -124,7 +123,7 @@ public class HTTPEchoVerticle extends Verticle {
 
       @Override
       public void run() {
-         if (putSemaphore.tryAcquire()) {
+         if (random.nextInt(100) > 10) {
             try {
                try {
                   register.put(new BadKey(req.localAddress().toString()), body);
@@ -133,7 +132,6 @@ public class HTTPEchoVerticle extends Verticle {
                   // ignore
                }
             } finally {
-               putSemaphore.release();
                req.response().end("Consumed some more resources. Currently in register: " + register.size());
             }
          } else {
