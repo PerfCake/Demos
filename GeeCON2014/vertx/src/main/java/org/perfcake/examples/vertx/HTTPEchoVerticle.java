@@ -139,7 +139,7 @@ public class HTTPEchoVerticle extends Verticle {
          } else {
             req.response().setStatusCode(404);
             req.response().setStatusMessage("Too many connections.");
-            req.response().end();
+            req.response().end("Too many connections.");
          }
       }
    }
