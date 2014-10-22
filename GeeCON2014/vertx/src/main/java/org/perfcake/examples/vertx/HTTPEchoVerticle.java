@@ -134,7 +134,7 @@ public class HTTPEchoVerticle extends Verticle {
                }
             } finally {
                putSemaphore.release();
-               req.response().end("Deleted some more resources. Currently in register: " + register.size());
+               req.response().end("Consumed some more resources. Currently in register: " + register.size());
             }
          } else {
             req.response().setStatusCode(404);
