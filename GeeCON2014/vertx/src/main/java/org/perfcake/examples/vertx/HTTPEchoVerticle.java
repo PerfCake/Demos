@@ -145,6 +145,7 @@ public class HTTPEchoVerticle extends Verticle {
    public void start() {
       vertx.createHttpServer().requestHandler(new Handler<HttpServerRequest>() {
          public void handle(final HttpServerRequest req) {
+            req.response().setStatusCode(200);
             req.response().headers().set("Content-Type", "text/html; charset=UTF-8");
             req.bodyHandler(new Handler<Buffer>() {
                public void handle(Buffer body) {
