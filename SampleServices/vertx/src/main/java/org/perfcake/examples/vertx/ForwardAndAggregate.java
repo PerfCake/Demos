@@ -32,6 +32,13 @@ public class ForwardAndAggregate {
    public static void main(String[] args) throws IOException {
       Vertx vertx = VertxFactory.newVertx();
 
+      if (args.length > 0 && "-c".equals(args[0])) {
+         System.out.println("Display client listening on 9092.");
+         HTTPTargetVerticle targetVerticle = new HTTPTargetVerticle();
+         targetVerticle.setVertx(vertx);
+         targetVerticle.start();
+      }
+
       HTTPAggregatorVerticle aggregatorVerticle = new HTTPAggregatorVerticle();
       aggregatorVerticle.setVertx(vertx);
       aggregatorVerticle.start();
