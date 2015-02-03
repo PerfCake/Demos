@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:3.0">
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:1}">
+      <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:5000}"/>
+   </generator>
+   <sender class="PlainSocketSender">
+      <!-- example web socket server can be found here: https://github.com/shekhargulati/wordgame -->
+      <property name="target" value="${server.host:localhost}:${server.port:12321}"/>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000"/>
+         </destination>
+         <destination class="ChartDestination">
+            <period type="time" value="500" />
+            <property name="yAxis" value="Throughput" />
+            <property name="group" value="perf" />
+            <property name="name" value="Echo in ${language:unknown}" />
+            <property name="attributes" value="Minimum,Maximum,Average,Result" />
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message uri="socket.txt"/>
+   </messages>
+</scenario>

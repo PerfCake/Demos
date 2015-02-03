@@ -15,12 +15,12 @@ class EchoRequestHandler(socketserver.StreamRequestHandler):
     Handles one connection to the client.
     """
     def handle(self):
-        print("connection from %s" % self.client_address[0])
+#        print("connection from %s" % self.client_address[0])
         while True:
             line = self.rfile.readline()
             if not line: break
             self.wfile.write(line[::-1]) # Reverse
-        print("%s disconnected" % self.client_address[0])
+#        print("%s disconnected" % self.client_address[0])
  
  
 # Create the server

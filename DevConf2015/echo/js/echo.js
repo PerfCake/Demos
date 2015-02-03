@@ -11,7 +11,7 @@ String.prototype.reverse = function() {
 }
 
 var server = net.createServer(function(conn) {
-  console.log("Connection from " + conn.remoteAddress + " on port " + conn.remotePort);
+//  console.log("Connection from " + conn.remoteAddress + " on port " + conn.remotePort);
   conn.setEncoding("utf8");
   var buffer = "";
  
