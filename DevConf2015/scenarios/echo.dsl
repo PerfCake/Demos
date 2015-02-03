@@ -1,15 +1,9 @@
-scenario "vertx-put"
-   run 3.m with 25.threads
+scenario "echo"
+   run 20.s with 20.threads
    generator "DefaultMessageGenerator"
-   sender "HttpSender" target "http://localhost:8080" method "PUT"
-   reporter "WarmUpReporter"
-   reporter "ThroughputStatsReporter" minimumEnabled "false" maximumEnabled "false"
-      destination "CsvDestination" every 1.s path "${perfcake.scenario}-throughput-stats-${perfcake.run.timestamp}.csv"
+   sender "PlainSocketSender" target "${server.host:localhost}:${server.port:12321}"
+   reporter "ThroughputStatsReporter"
       destination "ConsoleDestination" every 1.s
-   reporter "MemoryUsageReporter" memoryLeakDetectionEnabled "true" usedMemoryTimeWindowSize 240
-      destination "CsvDestination" every 1.s path "${perfcake.scenario}-memory-usage-${perfcake.run.timestamp}.csv"
-      destination "ConsoleDestination" every 1.s
-   message file:"message.txt" validate "putValidator"
-   validation enabled
-      validator "RegExpValidator" id "putValidator" pattern "Consumed.*"
+      destination "ChartDestination" every 500.ms yAxis "Throughput" group "perf" name "Echo in ${language:unknown}" attributes "Minimum, Maximum, Average, Result"
+   message file:"socket.txt"
 end

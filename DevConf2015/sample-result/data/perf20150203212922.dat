@@ -1,0 +1,1 @@
+drawChart(perf20150203212922, 'chart_perf20150203212922_div', [0, 1, 2, 3, 4], 'Time', 'Throughput', 'Echo in Ruby');

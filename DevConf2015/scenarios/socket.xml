@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scenario xmlns="urn:perfcake:scenario:3.0">
-   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:1}">
-      <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:5000}"/>
+<scenario xmlns="urn:perfcake:scenario:4.0">
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:20}">
+      <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:20000}"/>
    </generator>
    <sender class="PlainSocketSender">
       <!-- example web socket server can be found here: https://github.com/shekhargulati/wordgame -->
