@@ -1,0 +1,1 @@
+drawChart(vertx_put_throughput20150206170807, 'chart_vertx_put_throughput20150206170807_div', [0, 1], 1, 'Time', 'Throughput [iterations/s]', 'Throughput (GC=true)');
