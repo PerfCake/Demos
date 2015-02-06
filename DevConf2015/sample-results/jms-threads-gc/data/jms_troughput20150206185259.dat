@@ -1,0 +1,1 @@
+drawChart(jms_troughput20150206185259, 'chart_jms_troughput20150206185259_div', [0, 1, 2, 3, 4], 1, 'Time', 'Throughput [iterations/s]', 'Throughput (5 threads)');

@@ -1,0 +1,1 @@
+drawChart(jms_response_time20150206185644, 'chart_jms_response_time20150206185644_div', [0, 1, 2, 3, 4], 1, 'Time', 'Response Time [ms]', 'Response Time (25 threads)');

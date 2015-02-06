@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:4.0">
    <generator class="DefaultMessageGenerator" threads="${threads:100}">
-      <run type="time" value="10000"/>
+      <run type="time" value="60000"/>
    </generator>
    <sender class="RequestResponseJmsSender">
       <property name="target" value="jms/queue/PerfCakeQueue"/>
       <property name="responseTarget" value="jms/queue/PerfCakeQueue"/>
-      <property name="receivingTimeout" value="30000"/>
+      <property name="receivingTimeout" value="10000"/>
       <property name="receiveAttempts" value="1"/>
       <property name="connectionFactory" value="jms/RemoteConnectionFactory"/>
       <property name="username" value="guest"/>
@@ -35,7 +35,7 @@
             <property name="group" value="${perfcake.scenario}_response_time"/>
             <property name="name" value="Response Time (${threads:100} threads)"/>
             <property name="attributes" value="Minimum,Maximum,Average,Result"/>
-            <property name="target" value="${perfcake.scenario}-charts"/>
+            <property name="outputDir" value="${perfcake.scenario}-charts"/>
          </destination>
       </reporter>
       <reporter class="ThroughputStatsReporter">
@@ -52,12 +52,13 @@
             <property name="group" value="${perfcake.scenario}_troughput"/>
             <property name="name" value="Throughput (${threads:100} threads)"/>
             <property name="attributes" value="Minimum,Maximum,Average,Result"/>
-            <property name="target" value="${perfcake.scenario}-charts"/>
+            <property name="outputDir" value="${perfcake.scenario}-charts"/>
          </destination>
       </reporter>
       <reporter class="MemoryUsageReporter">
          <property name="agentHostname" value="${server.host:localhost}"/>
          <property name="agentPort" value="8850"/>
+         <property name="performGcOnMemoryUsage" value="true"/>
          <destination class="ConsoleDestination">
             <period type="time" value="10000"/>
          </destination>
@@ -71,7 +72,7 @@
             <property name="group" value="${perfcake.scenario}_memory"/>
             <property name="name" value="Memory (${threads:100} threads)"/>
             <property name="attributes" value="Used,Total,Max"/>
-            <property name="target" value="${perfcake.scenario}-charts"/>
+            <property name="outputDir" value="${perfcake.scenario}-charts"/>
          </destination>
       </reporter>
    </reporting>
