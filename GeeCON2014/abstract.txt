@@ -1,0 +1,11 @@
+Authors' Bio
+============
+Martin Večeřa - Experienced team leader of several Quality Assurance teams for various JBoss Middleware products from both technical and people manager point of view. An autocratic manager of the best performance testing tool PerfCake.
+Pavel Macík - Pavel is a senior QA engineer working in Red Hat as a part of the JBoss QE team with the main focus on performance for over 5 years. He is also one of the core developers of the PerfCake performance testing framework.
+
+
+Abstract
+========
+In this presentation, we will quickly guide you through all the aspects of performance testing of your applications, pinpointing all the hidden dangers and risks. And find answers to some questions...
+Why performance matters? Which testing tool should you choose? How to design a new performance measurement tool when all the others suck? What are the difficulties there? What is different about PerfCake?
+After that, we will mention cool features and unique algorithms used in PerfCake, smooth DSL integration using Groovy, extensibility and we will conclude with a real world usage example. 
