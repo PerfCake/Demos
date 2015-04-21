@@ -143,7 +143,7 @@
       <profile>
          <id>agent</id>
          <properties>
-            <perfcake.version>4.1-SNAPSHOT</perfcake.version>
+            <perfcake.version>4.1</perfcake.version>
             <agent.host>localhost</agent.host>
             <agent.jar.path>${settings.localRepository}/org/perfcake/perfcake-agent/${perfcake.version}/perfcake-agent-${perfcake.version}.jar</agent.jar.path>
          </properties>
