@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:5.0">
+   <run type="time" value="20000"/>
+   <generator class="DefaultMessageGenerator" threads="20"/>
+   <sender class="PlainSocketSender">
+      <property name="target" value="${server.host:localhost}:${server.port:12321}"/>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="10000"/>
+         </destination>
+         <destination class="ChartDestination">
+            <period type="time" value="500"/>
+            <property name="yAxis" value="Throughput [iterations/s]"/>
+            <property name="group" value="perf"/>
+            <property name="name" value="Echo in ${language:unknown}"/>
+            <property name="attributes" value="Minimum, Maximum, Average, Result"/>
+         </destination>
+      </reporter>
+   <messages>
+      <message content="I'm a fish!"/>
+   </messages>
+</scenario>
