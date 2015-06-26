@@ -23,6 +23,7 @@ public class PlusService {
    @Consumes("text/plain")
    @Produces("text/plain")
    public int plusPost(int i){
+      //System.out.println(i + " + 1 = " + (i + 1));
       return i + 1;
    }
 }
