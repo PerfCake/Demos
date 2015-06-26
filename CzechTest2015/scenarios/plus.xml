@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:5.0">
-   <run type="time" value="20000"/>
+   <run type="time" value="10000"/>
    <generator class="DefaultMessageGenerator" threads="5"/>
    <sequences>
       <sequence name="counter" class="NumberSequence">
@@ -11,7 +11,7 @@
       </sequence>
    </sequences>
    <sender class="HttpSender">
-      <property name="target" value="${server.host:localhost}:${server.port:8080}"/>
+      <property name="target" value="http://${server.host:localhost}:${server.port:8181}/cxf/plus"/>
    </sender>
    <reporting>
       <reporter class="ThroughputStatsReporter">
@@ -26,9 +26,10 @@
             <property name="attributes" value="Average, Result"/>
          </destination>
       </reporter>
-   <reporting>
+   </reporting>
    <messages>
       <message content="@{counter}">
+         <header name="Content-Type" value="text/plain"/>
          <validatorRef id="plusValidator"/>
       </message>
    </messages>
