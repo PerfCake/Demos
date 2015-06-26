@@ -9,12 +9,20 @@ import javax.ws.rs.Produces;
 
 @Path("/")
 public class PlusService {
-	
-	@GET
-	@Path("/{i}")
-	@Consumes("text/plain")
-	@Produces("text/plain")
-	public int plus(@PathParam("i") int i){
-		return i+1;
-	}
+
+   @GET
+   @Path("/{i}")
+   @Consumes("text/plain")
+   @Produces("text/plain")
+   public int plusGet(@PathParam("i") int i){
+      return i + 1;
+   }
+
+   @POST
+   @Path("/")
+   @Consumes("text/plain")
+   @Produces("text/plain")
+   public int plusPost(int i){
+      return i + 1;
+   }
 }
