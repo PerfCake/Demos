@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:6.0">
-   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:60000}"/>
-   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:25}"/>
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:20000}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:10}"/>
    <sender class="MqttSender">
-      <target>tcp://${server.host}:${server.port}/cpt-mqtt-spring-request</target>
+      <target>tcp://${server.host:localhost}:61616/cpt-mqtt-spring-request</target>
       <property name="responseTarget" value="cpt-mqtt-spring-response"/>
    </sender>
    <reporting>
       <reporter class="IterationsPerSecondReporter">
          <destination class="ConsoleDestination">
-            <period type="time" value="1000"/>
+            <period type="time" value="5000"/>
          </destination>
          <destination class="ChartDestination">
             <period type="time" value="1000"/>
@@ -32,6 +32,6 @@
       </reporter>
    </reporting>
    <messages>
-      <message content="I'm a fish!"/>
+      <message content="Hello!"/>
    </messages>
 </scenario>
