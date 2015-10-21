@@ -16,17 +16,17 @@
             <property name="attributes" value="Result"/>
             <property name="outputDir" value="${perfcake.scenario}-charts"/>
             <property name="yAxis" value="Iterations per second"/>
-            <property name="name" value="MQTT Throughput (${perfcake.run.tag})"/>
+            <property name="name" value="MQTT Throughput (${tag})"/>
          </destination>
-         <destination class="PerfRepoDestination" enabled="${perfrepo.enabled:false}">
+         <destination class="PerfRepoDestination">
             <period type="percentage" value="100"/>
             <property name="metric" value="throughput"/>
             <property name="repositoryUrl" value="${perfrepo.host:localhost}:${perfrepo.port:8080}"/>
             <property name="username" value="perfrepouser"/>
             <property name="password" value="perfrepouser1."/>
             <property name="testUID" value="${perfcake.scenario}"/>
-            <property name="tags" value="GeeCON2015;IoT;${perfcake.run.tag}"/>
-            <property name="testExecutionName" value="GeeCON 2015: IoT MQTT (${perfcake.run.tag})"/>
+            <property name="tags" value="GeeCON2015;IoT;${tag}"/>
+            <property name="testExecutionName" value="GeeCON 2015: IoT MQTT (${tag})"/>
             <property name="reporterResultName" value="Result"/>
          </destination>
       </reporter>
