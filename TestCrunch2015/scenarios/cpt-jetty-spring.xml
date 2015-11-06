@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:6.0">
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:20000}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:10}"/>
+   <sender class="HttpSender">
+      <target>http://${server.host:localhost}:8181/cpt-jetty-spring</target>
+      <property name="method" value="POST"/>
+   </sender>
+   <reporting>
+      <reporter class="IterationsPerSecondReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="5000"/>
+         </destination>
+         <destination class="ChartDestination">
+            <period type="time" value="1000"/>
+            <property name="attributes" value="Result"/>
+            <property name="outputDir" value="${perfcake.scenario}-charts"/>
+            <property name="yAxis" value="Iterations per second"/>
+            <property name="name" value="REST Throughput (${tag})"/>
+         </destination>
+         <destination class="PerfRepoDestination">
+            <period type="percentage" value="100"/>
+            <property name="metric" value="throughput"/>
+            <property name="repositoryUrl" value="${perfrepo.host:localhost}:${perfrepo.port:8080}"/>
+            <property name="username" value="perfrepouser"/>
+            <property name="password" value="perfrepouser1."/>
+            <property name="testUID" value="${perfcake.scenario}"/>
+            <property name="tags" value="IoT;${tag}"/>
+            <property name="testExecutionName" value="IoT REST (${tag})"/>
+            <property name="reporterResultName" value="Result"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message content="Hello!"/>
+   </messages>
+</scenario>

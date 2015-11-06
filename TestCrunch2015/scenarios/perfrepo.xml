@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:6.0">
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:10000}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:50}"/>
+   <sender class="DummySender">
+      <target>Out there!</target>
+      <property name="delay" value="${delay:200}"/>
+   </sender>
+   <reporting>
+      <reporter class="IterationsPerSecondReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000"/>
+         </destination>
+         <destination class="PerfRepoDestination">
+            <period type="percentage" value="100"/>
+            <property name="metric" value="throughput"/>
+            <property name="repositoryUrl" value="${perfrepo.host:localhost}:${perfrepo.port:8080}"/>
+            <property name="username" value="perfrepouser"/>
+            <property name="password" value="perfrepouser1."/>
+            <property name="testUID" value="test"/>
+            <property name="tags" value="Test;delay=${delay:200}"/>
+            <property name="testExecutionName" value="Test: (${perfcake.run.nice.timestamp})"/>
+            <property name="reporterResultName" value="Result"/>
+         </destination>
+      </reporter>
+   </reporting>
+</scenario>
