@@ -17,13 +17,13 @@
  * limitations under the License.
  * -----------------------------------------------------------------------/
  */
-package vut.pv260.app1.routes;
+package vut.pv260.sut.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 
-import vut.pv260.app1.processors.MemoryLeakProcessor;
-import vut.pv260.app1.processors.NopProcessor;
-import vut.pv260.app1.processors.TouchProcessor;
+import vut.pv260.sut.processors.MemoryLeakProcessor;
+import vut.pv260.sut.processors.NopProcessor;
+import vut.pv260.sut.processors.TouchProcessor;
 
 /**
  * @author <a href="mailto:pavel.macik@gmail.com">Pavel Macík</a>

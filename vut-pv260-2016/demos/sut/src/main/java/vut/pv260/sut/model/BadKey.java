@@ -1,4 +1,4 @@
-package vut.pv260.app1.model;
+package vut.pv260.sut.model;
 
 /**
  * Created by pmacik on 21.4.16.

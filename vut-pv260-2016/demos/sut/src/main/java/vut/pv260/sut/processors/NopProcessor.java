@@ -17,31 +17,18 @@
  * limitations under the License.
  * -----------------------------------------------------------------------/
  */
-package vut.pv260.app1.processors;
+package vut.pv260.sut.processors;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.Processor;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import vut.pv260.app1.model.BadKey;
 
 /**
  * @author <a href="mailto:pavel.macik@gmail.com">Pavel Macík</a>
  */
-public class MemoryLeakProcessor implements Processor {
-   static private Map<BadKey, String> register = Collections.synchronizedMap(new HashMap<BadKey, String>());
-   private static final Random random = new Random();
+public class NopProcessor implements Processor {
 
    @Override
    public void process(final Exchange exchange) throws Exception {
-      final Message message = exchange.getIn();
-      register.put(new BadKey(message.getHeader("key", String.class)), message.getBody(String.class));
-      Thread.sleep(random.nextInt(300));
-      message.setBody("Consumed some more resources. Currently in register:" + register.size());
+      // nop
    }
 }

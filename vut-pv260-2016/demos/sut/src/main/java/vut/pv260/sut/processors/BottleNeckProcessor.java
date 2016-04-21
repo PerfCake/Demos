@@ -17,7 +17,7 @@
  * limitations under the License.
  * -----------------------------------------------------------------------/
  */
-package vut.pv260.app1.processors;
+package vut.pv260.sut.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -26,7 +26,7 @@ import org.apache.camel.Processor;
 /**
  * @author <a href="mailto:pavel.macik@gmail.com">Pavel Macík</a>
  */
-public class TouchProcessor implements Processor {
+public class BottleNeckProcessor implements Processor {
 
    @Override
    public void process(final Exchange exchange) throws Exception {
