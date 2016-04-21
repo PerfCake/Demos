@@ -31,6 +31,15 @@ public class BottleNeckProcessor implements Processor {
    @Override
    public void process(final Exchange exchange) throws Exception {
       final Message message = exchange.getIn();
-      message.setBody("Touched: " + message.getBody(String.class));
+      final String request = message.getBody(String.class);
+      String response = "";
+      if ("1".equals(message.getHeader("option", String.class))) {
+         for (int i = 0; i < request.length(); i++) {
+            response = response + request.charAt(i);
+         }
+      } else {
+         response = request;
+      }
+      message.setBody("Touched: " + response);
    }
 }

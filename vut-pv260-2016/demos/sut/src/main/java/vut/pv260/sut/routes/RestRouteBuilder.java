@@ -21,6 +21,7 @@ package vut.pv260.sut.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 
+import vut.pv260.sut.processors.BottleNeckProcessor;
 import vut.pv260.sut.processors.MemoryLeakProcessor;
 import vut.pv260.sut.processors.NopProcessor;
 import vut.pv260.sut.processors.TouchProcessor;
@@ -33,6 +34,7 @@ public class RestRouteBuilder extends RouteBuilder {
    private NopProcessor nopProcessor = new NopProcessor();
    private TouchProcessor touchProcessor = new TouchProcessor();
    private MemoryLeakProcessor memoryLeakProcessor = new MemoryLeakProcessor();
+   private BottleNeckProcessor bottleNeckProcessor = new BottleNeckProcessor();
 
    @Override
    public void configure() throws Exception {
@@ -42,6 +44,8 @@ public class RestRouteBuilder extends RouteBuilder {
 
       from("jetty:http://0.0.0.0:8888/touch/simple?httpMethodRestrict=POST").setBody(simple("Touched: ${body}"));
 
-      from("jetty:http://0.0.0.0:8888/memoryLeak?httpMethodRestrict=POST").process(memoryLeakProcessor);
+      from("jetty:http://0.0.0.0:8888/memory-leak?httpMethodRestrict=POST").process(memoryLeakProcessor);
+
+      from("jetty:http://0.0.0.0:8888/bottle-neck?httpMethodRestrict=POST").process(bottleNeckProcessor);
    }
 }
