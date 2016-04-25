@@ -4,8 +4,8 @@
    <artifactId>demos-parent</artifactId>
    <version>1.0-SNAPSHOT</version>
    <packaging>pom</packaging>
-   <name>VUT-PV260: Demos Parent</name>
-   <description>Parent pom of VUT PV260 course demos.</description>
+   <name>FI MUNI-PV260: Demos Parent</name>
+   <description>Parent pom of FI MUNI PV260 course demos.</description>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <java.level>1.8</java.level>

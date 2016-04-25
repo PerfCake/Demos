@@ -1,4 +1,4 @@
-package vut.pv260.sut.model;
+package fi.muni.pv260.sut.model;
 
 /**
  * Created by pmacik on 21.4.16.

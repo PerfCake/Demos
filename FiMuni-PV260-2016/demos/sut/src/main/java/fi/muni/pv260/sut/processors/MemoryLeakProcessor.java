@@ -17,29 +17,31 @@
  * limitations under the License.
  * -----------------------------------------------------------------------/
  */
-package vut.pv260.sut.processors;
+package fi.muni.pv260.sut.processors;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import fi.muni.pv260.sut.model.BadKey;
+
 /**
  * @author <a href="mailto:pavel.macik@gmail.com">Pavel Macík</a>
  */
-public class BottleNeckProcessor implements Processor {
+public class MemoryLeakProcessor implements Processor {
+   static private Map<BadKey, String> register = Collections.synchronizedMap(new HashMap<BadKey, String>());
+   private static final Random random = new Random();
 
    @Override
    public void process(final Exchange exchange) throws Exception {
       final Message message = exchange.getIn();
-      final String request = message.getBody(String.class);
-      String response = "";
-      if ("1".equals(message.getHeader("option", String.class))) {
-         for (int i = 0; i < request.length(); i++) {
-            response = response + request.charAt(i);
-         }
-      } else {
-         response = request;
-      }
-      message.setBody("Touched: " + response);
+      register.put(new BadKey(message.getHeader("key", String.class)), message.getBody(String.class));
+      Thread.sleep(random.nextInt(300));
+      message.setBody("Consumed some more resources. Currently in register:" + register.size());
    }
 }
