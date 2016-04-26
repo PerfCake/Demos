@@ -19,7 +19,7 @@
       <version.maven.jar.plugin>2.4</version.maven.jar.plugin>
       <version.maven.dependency.plugin>2.8</version.maven.dependency.plugin>
       <version.silverware>2.0-SNAPSHOT</version.silverware>
-      <version.perfcake>7.0-SNAPSHOT</version.perfcake>
+      <version.perfcake>6.2</version.perfcake>
    </properties>
    <modules>
       <module>sut</module>
