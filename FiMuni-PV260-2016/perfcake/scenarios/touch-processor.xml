@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:6.0">
-   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:300000}"/>
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:120000}"/>
    <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:100}"/>
    <sender class="HttpSender">
       <target>http://${server.host:localhost}:${server.port:8888}/touch/processor</target>
