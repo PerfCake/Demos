@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:6.0">
-   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:300000}"/>
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:120000}"/>
    <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:100}"/>
    <sender class="HttpSender">
-      <target>http://${server.host:localhost}:${server.port:8888}/memoryLeak</target>
+      <target>http://${server.host:localhost}:${server.port:8888}/memory-leak</target>
       <property name="method" value="POST"/>
    </sender>
    <reporting>
@@ -13,6 +13,7 @@
          <property name="performGcOnMemoryUsage" value="${perfcake.memory.gc:false}"/>
          <property name="memoryLeakDetectionEnabled" value="${perfcake.memory.leakdetection:false}"/>
          <property name="memoryLeakSlopeThreshold" value="1024"/>
+         <property name="memoryDumpOnLeak" value="true"/>
          <destination class="CsvDestination">
             <period type="time" value="5000"/>
             <property name="path" value="test-output/${perfcake.scenario}-memory-usage-${perfcake.run.timestamp}.csv" />
@@ -25,11 +26,13 @@
             <property name="attributes" value="Total,Used"/>
             <property name="outputDir" value="test-output/${perfcake.scenario}-memory-charts"/>
             <property name="yAxis" value="Memory usage [MiB]"/>
-            <property name="name" value="Memory (${perfcake.scenario} [${perfcake.message.size:1kB} message])"/>
+            <property name="name" value="Memory (${perfcake.scenario} [${perfcake.message.size:1kB} message][GC=${perfcake.memory.gc:false}])"/>
          </destination>
       </reporter>
    </reporting>
    <messages>
-      <message uri="${perfcake.message.size:1kB}-message.txt"/>
+      <message uri="${perfcake.message.size:1kB}-message.txt">
+         <header name="key" value="${perfcake.scenario}-${perfcake.run.timestamp}"/>
+      </message>
    </messages>
 </scenario>
