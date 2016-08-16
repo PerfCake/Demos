@@ -1,6 +1,10 @@
 GeeCON 2016 Live coding session
 ===============================
 
+Instructions status: DRAFT - will be marked as final no later than 24 hours before the conference start
+
+Please do not follow the instructions until you can see the final status!
+
 Preparation before the session:
 1. Download PerfCake 7.0 distribution from www.perfcake.org
 2. Unzip into any directory
