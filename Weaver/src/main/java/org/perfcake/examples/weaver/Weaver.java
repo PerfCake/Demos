@@ -31,6 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -83,10 +86,23 @@ public final class Weaver {
 
    private void init() throws IOException {
       int maxThreads = Files.lines(Paths.get(config)).collect(Collectors.summingInt(this::parseWorker));
-      if (threads > maxThreads) {
-         System.out.println("ERROR Maximum possible threads is " + maxThreads + ", while you requested " + threads + ". Using " + maxThreads + ".");
+      if (threads > maxThreads || threads == 0) {
+         if (threads > maxThreads) {
+            System.out.println("ERROR Maximum possible threads is " + maxThreads + ", while you requested " + threads + ". Using " + maxThreads + ".");
+         }
          threads = maxThreads;
       }
+
+      if (shuffle) {
+         System.out.println("INFO Shuffling workers...");
+
+         final List<Worker> workersList = workers.stream().collect(Collectors.toList());
+         Collections.shuffle(workersList);
+         workers.clear();
+         workersList.forEach(workers::offer);
+      }
+
+      System.out.println("INFO Creating executor with " + threads + " threads.");
 
       executor = new ThreadPoolExecutor(threads, threads, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(), new ThreadFactoryBuilder().setDaemon(true).setNameFormat("worker-thread-%d").build());
@@ -120,11 +136,11 @@ public final class Weaver {
       return 0;
    }
 
-   private void run() {
+   private void run() throws IOException {
       final WeaverServer server = new WeaverServer(workers, executor, port, host);
       System.out.println("INFO Started server listening on " + host + ":" + port);
-      System.out.println("INFO Press Enter or Ctrl+C to terminate...");
-      System.console().readLine();
+      System.out.println("INFO Press Ctrl+C to terminate...");
+      System.in.read();
       server.close();
    }
 }

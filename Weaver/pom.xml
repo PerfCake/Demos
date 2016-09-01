@@ -6,7 +6,7 @@
    <groupId>org.perfcake.examples</groupId>
    <artifactId>weaver</artifactId>
    <packaging>jar</packaging>
-   <version>1.0</version>
+   <version>1.0-SNAPSHOT</version>
    <name>Thread Weaver - A sample HTTP service</name>
    <url>http://www.perfcake.org</url>
    <organization>
@@ -55,7 +55,6 @@
 
       <!--Dependency versions-->
       <vertx.version>3.3.2</vertx.version>
-      <vertx.testtools.version>2.0.3-final</vertx.testtools.version>
       <junit.version>4.12</junit.version>
       <perfcake.version>7.0-SNAPSHOT</perfcake.version>
       <jcommander.version>1.48</jcommander.version>
@@ -71,6 +70,9 @@
       <maven.surefire.report.plugin.version>2.19.1</maven.surefire.report.plugin.version>
       <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
       <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
+
+      <weaver.threads>0</weaver.threads>
+      <weaver.shuffle>false</weaver.shuffle>
    </properties>
 
    <dependencyManagement>
@@ -95,7 +97,6 @@
          <artifactId>jcommander</artifactId>
          <version>${jcommander.version}</version>
       </dependency>
-      <!--Vertx provided dependencies-->
       <dependency>
          <groupId>io.vertx</groupId>
          <artifactId>vertx-core</artifactId>
@@ -110,24 +111,17 @@
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
       </dependency>
-      <!--dependency>
-         <groupId>io.vertx</groupId>
-         <artifactId>vertx-hazelcast</artifactId>
-         <version>${vertx.version}</version>
-      </dependency-->
-      <!--Test dependencies-->
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+      </dependency>
+
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
          <version>${junit.version}</version>
          <scope>test</scope>
       </dependency>
-      <!--dependency>
-         <groupId>io.vertx</groupId>
-         <artifactId>testtools</artifactId>
-         <version>${vertx.testtools.version}</version>
-         <scope>test</scope>
-      </dependency-->
    </dependencies>
 
    <build>
@@ -166,9 +160,9 @@
                   <argument>-c</argument>
                   <argument>${weaver.config}</argument>
                   <argument>-t</argument>
-                  <argument>${weaver.threads:0}</argument>
+                  <argument>${weaver.threads}</argument>
                   <argument>-s</argument>
-                  <argument>${weaver.threads:false}</argument>
+                  <argument>${weaver.shuffle}</argument>
                </arguments>
             </configuration>
          </plugin>
