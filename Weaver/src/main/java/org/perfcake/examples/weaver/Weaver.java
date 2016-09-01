@@ -19,33 +19,51 @@
  */
 package org.perfcake.examples.weaver;
 
+import org.perfcake.examples.weaver.worker.Worker;
+import org.perfcake.util.ObjectFactory;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.concurrent.Executors;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public final class Weaver {
 
-   @Parameter(names = {"-t", "--threads"}, description = "Number of threads, 0 = unlimited")
+   @Parameter(names = { "-t", "--threads" }, description = "Number of threads, 0 = automatic based on number of workers")
    private int threads = 0;
 
-   @Parameter(names = {"-s", "--shuffle"}, description = "Shuffle the workers", arity = 1)
+   @Parameter(names = { "-s", "--shuffle" }, description = "Shuffle the workers", arity = 1)
    private boolean shuffle = false;
 
-   @Parameter(names = {"-c", "--config"}, description = "Configuration file", required = true)
+   @Parameter(names = { "-c", "--config" }, description = "Configuration file", required = true)
    private String config = null;
 
-   @Parameter(names = {"--help"}, description = "Prints out command usage")
+   @Parameter(names = { "--help" }, description = "Prints out command usage")
    private boolean help = false;
 
-   @Parameter(names = {"-p", "--port"}, description = "Network port to listen on")
+   @Parameter(names = { "-p", "--port" }, description = "Network port to listen on")
    private int port = 8080;
 
-   @Parameter(names = {"-h", "--host"}, description = "Network host to listen on")
+   @Parameter(names = { "-h", "--host" }, description = "Network host to listen on")
    private String host = "localhost";
 
-   public static void main(String[] args) {
+   private final Queue<Worker> workers = new ConcurrentLinkedQueue<>();
+
+   private ThreadPoolExecutor executor;
+
+   public static void main(String[] args) throws IOException {
       final Weaver weaver = new Weaver();
       final JCommander jCommander = new JCommander(weaver, args);
 
@@ -58,12 +76,55 @@ public final class Weaver {
          System.out.println("The specified configuration file '" + weaver.config + "' does not exists.");
          System.exit(2);
       }
+
+      weaver.init();
+      weaver.run();
    }
 
-   private void init() {
+   private void init() throws IOException {
+      int maxThreads = Files.lines(Paths.get(config)).collect(Collectors.summingInt(this::parseWorker));
+      if (threads > maxThreads) {
+         System.out.println("ERROR Maximum possible threads is " + maxThreads + ", while you requested " + threads + ". Using " + maxThreads + ".");
+         threads = maxThreads;
+      }
+
+      executor = new ThreadPoolExecutor(threads, threads, 0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(), new ThreadFactoryBuilder().setDaemon(true).setNameFormat("worker-thread-%d").build());
+   }
+
+   private int parseWorker(final String configLine) {
+      final String[] spaceSplit = configLine.split(" ", 2);
+      final String[] equalsSplit = spaceSplit[1].split("=", 2);
+      final int count = Integer.parseInt(StringUtils.strip(spaceSplit[0], " x"));
+      String clazz = StringUtils.strip(equalsSplit[0]);
+      clazz = clazz.contains(".") ? clazz : "org.perfcake.examples.weaver.worker." + clazz;
+      final String[] propertiesConfig = StringUtils.stripAll(StringUtils.strip(equalsSplit[1]).split(","));
+      final Properties properties = new Properties();
+      for (final String property : propertiesConfig) {
+         final String[] keyValue = StringUtils.stripAll(property.split(":", 2));
+         properties.setProperty(keyValue[0], keyValue[1]);
+      }
+
+      try {
+         System.out.println("INFO Summoning " + count + " instances of " + clazz + " with properties " + properties);
+         for (int i = 0; i < count; i++) {
+            workers.add((Worker) ObjectFactory.summonInstance(clazz, properties));
+         }
+
+         return count;
+      } catch (ReflectiveOperationException e) {
+         System.out.println("ERROR Unable to parse line: " + configLine);
+         e.printStackTrace();
+      }
+
+      return 0;
    }
 
    private void run() {
-
+      final WeaverServer server = new WeaverServer(workers, executor, port, host);
+      System.out.println("INFO Started server listening on " + host + ":" + port);
+      System.out.println("INFO Press Enter or Ctrl+C to terminate...");
+      System.console().readLine();
+      server.close();
    }
 }

@@ -19,11 +19,17 @@
  */
 package org.perfcake.examples.weaver;
 
+import org.perfcake.examples.weaver.worker.Worker;
+import org.perfcake.examples.weaver.worker.WorkerThread;
+
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+
+import java.util.Queue;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public final class WeaverServer {
 
@@ -31,7 +37,13 @@ public final class WeaverServer {
 
    private final Thread serverThread;
 
-   WeaverServer(final int port, final String host) {
+   private final Queue<Worker> workers;
+
+   private final ThreadPoolExecutor executor;
+
+   WeaverServer(final Queue<Worker> workers, final ThreadPoolExecutor executor, final int port, final String host) {
+      this.workers = workers;
+      this.executor = executor;
       final Vertx vertx = Vertx.vertx();
       server = vertx.createHttpServer();
       final Router router = Router.router(vertx);
@@ -44,7 +56,8 @@ public final class WeaverServer {
    }
 
    private void handle(final RoutingContext context) {
-
+      final WorkerThread workerThread = new WorkerThread(workers, context);
+      executor.submit(workerThread);
    }
 
    void close() {

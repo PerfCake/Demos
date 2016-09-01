@@ -22,8 +22,9 @@ Then the class name of the worker (the package if not present defaults to _org.p
 You can keep the worker in the order as specified in the configuration file or shuffle them by setting _weaver.shuffle_ property
 to true.
 
-You can limit the number of threads by setting _weaver.thread_ property. If not specified a _CachedThreadPool_ is used, otherwise, _FixedThreadPool_ is used.
+You can limit the number of threads by setting _weaver.thread_ property. 
 All the threads are started as daemon threads not to block the process when terminated.
+The number of threads can never be higher than the number of workers created.
 
 The application can be terminated by ^C / Ctrl+C.
 
