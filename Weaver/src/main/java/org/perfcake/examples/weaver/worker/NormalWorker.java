@@ -24,27 +24,33 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
  */
-public class DelayWorker extends NormalWorker {
+public class NormalWorker implements Worker {
 
-   private int delay;
+   private int statusCode = 200;
+
+   private String statusMessage = null;
 
    @Override
    public void work(final RoutingContext context) throws Throwable {
-      try {
-         Thread.sleep(delay);
-      } catch (InterruptedException e) {
-         // nop
+      if (statusMessage != null) {
+         context.response().setStatusMessage(statusMessage);
       }
-
-      super.work(context);
+      context.response().setStatusCode(statusCode).end();
    }
 
-   public int getDelay() {
-      return delay;
+   public int getStatusCode() {
+      return statusCode;
    }
 
-   public void setDelay(final int delay) {
-      this.delay = delay;
+   public void setStatusCode(final int statusCode) {
+      this.statusCode = statusCode;
    }
 
+   public String getStatusMessage() {
+      return statusMessage;
+   }
+
+   public void setStatusMessage(final String statusMessage) {
+      this.statusMessage = statusMessage;
+   }
 }

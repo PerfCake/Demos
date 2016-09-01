@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
@@ -109,28 +108,30 @@ public final class Weaver {
    }
 
    private int parseWorker(final String configLine) {
-      final String[] spaceSplit = configLine.split(" ", 2);
-      final String[] equalsSplit = spaceSplit[1].split("=", 2);
-      final int count = Integer.parseInt(StringUtils.strip(spaceSplit[0], " x"));
-      String clazz = StringUtils.strip(equalsSplit[0]);
-      clazz = clazz.contains(".") ? clazz : "org.perfcake.examples.weaver.worker." + clazz;
-      final String[] propertiesConfig = StringUtils.stripAll(StringUtils.strip(equalsSplit[1]).split(","));
-      final Properties properties = new Properties();
-      for (final String property : propertiesConfig) {
-         final String[] keyValue = StringUtils.stripAll(property.split(":", 2));
-         properties.setProperty(keyValue[0], keyValue[1]);
-      }
-
-      try {
-         System.out.println("INFO Summoning " + count + " instances of " + clazz + " with properties " + properties);
-         for (int i = 0; i < count; i++) {
-            workers.add((Worker) ObjectFactory.summonInstance(clazz, properties));
+      if (configLine != null && !configLine.isEmpty() && !configLine.startsWith("#")) {
+         final String[] spaceSplit = configLine.split(" ", 2);
+         final String[] equalsSplit = spaceSplit[1].split("=", 2);
+         final int count = Integer.parseInt(StringUtils.strip(spaceSplit[0], " x"));
+         String clazz = StringUtils.strip(equalsSplit[0]);
+         clazz = clazz.contains(".") ? clazz : "org.perfcake.examples.weaver.worker." + clazz;
+         final String[] propertiesConfig = StringUtils.stripAll(StringUtils.strip(equalsSplit[1]).split(","));
+         final Properties properties = new Properties();
+         for (final String property : propertiesConfig) {
+            final String[] keyValue = StringUtils.stripAll(property.split(":", 2));
+            properties.setProperty(keyValue[0], keyValue[1]);
          }
 
-         return count;
-      } catch (ReflectiveOperationException e) {
-         System.out.println("ERROR Unable to parse line: " + configLine);
-         e.printStackTrace();
+         try {
+            System.out.println("INFO Summoning " + count + " instances of " + clazz + " with properties " + properties);
+            for (int i = 0; i < count; i++) {
+               workers.add((Worker) ObjectFactory.summonInstance(clazz, properties));
+            }
+
+            return count;
+         } catch (ReflectiveOperationException e) {
+            System.out.println("ERROR Unable to parse line: " + configLine);
+            e.printStackTrace();
+         }
       }
 
       return 0;
