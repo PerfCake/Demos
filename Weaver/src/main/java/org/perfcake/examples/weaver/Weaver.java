@@ -114,7 +114,7 @@ public final class Weaver {
     * @throws IOException
     *       When it was not possible to parse the configuration.
     */
-   private void init() throws IOException {
+   public void init() throws IOException {
       int maxThreads = Files.lines(Paths.get(config)).collect(Collectors.summingInt(this::parseWorker));
       if (threads > maxThreads || threads == 0) {
          if (threads > maxThreads) {
@@ -164,11 +164,17 @@ public final class Weaver {
             for (int i = 0; i < count; i++) {
                final Worker worker = (Worker) ObjectFactory.summonInstance(clazz, properties);
 
+               boolean add = true;
                if (worker instanceof MapConfigurable) {
-                  ((MapConfigurable) worker).configure(properties);
+                  log.info("Found auto-configurable worker, it is safe to ignore previous warnings about configuring workerX_ properties.");
+                  add = ((MapConfigurable) worker).configure(properties);
                }
 
-               workers.add(worker);
+               if (add) {
+                  workers.add(worker);
+               } else {
+                  log.warn("Bad configuration. Skipping worker " + clazz);
+               }
             }
 
             return count;
@@ -183,7 +189,7 @@ public final class Weaver {
    /**
     * Starts the server.
     */
-   private void run() {
+   public void run() {
       final WeaverServer server = new WeaverServer(workers, executor, port, host);
       log.info("Started server listening on " + host + ":" + port);
       log.info("Press Ctrl+C to terminate...");
@@ -194,5 +200,49 @@ public final class Weaver {
       } finally {
          server.close();
       }
+   }
+
+   public int getThreads() {
+      return threads;
+   }
+
+   public void setThreads(final int threads) {
+      this.threads = threads;
+   }
+
+   public boolean isShuffle() {
+      return shuffle;
+   }
+
+   public void setShuffle(final boolean shuffle) {
+      this.shuffle = shuffle;
+   }
+
+   public String getConfig() {
+      return config;
+   }
+
+   public void setConfig(final String config) {
+      this.config = config;
+   }
+
+   public int getPort() {
+      return port;
+   }
+
+   public void setPort(final int port) {
+      this.port = port;
+   }
+
+   public String getHost() {
+      return host;
+   }
+
+   public void setHost(final String host) {
+      this.host = host;
+   }
+
+   public Queue<Worker> getWorkers() {
+      return workers;
    }
 }

@@ -33,6 +33,7 @@ public interface MapConfigurable {
     *
     * @param configuration
     *       Configuration properties.
+    * @return True iff it was possible to successfully configure the worker and it should be added to the common pool of workers.
     */
-   void configure(final Properties configuration);
+   boolean configure(final Properties configuration);
 }
