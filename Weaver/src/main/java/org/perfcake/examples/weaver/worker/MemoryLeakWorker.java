@@ -19,11 +19,11 @@
  */
 package org.perfcake.examples.weaver.worker;
 
+import io.vertx.ext.web.RoutingContext;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.vertx.ext.web.RoutingContext;
 
 /**
  * Causes a memory leak by putting HTTP requests' bodies to a hash map using a dirty custom object without a proper
@@ -49,7 +49,7 @@ public class MemoryLeakWorker extends NormalWorker {
    private Map<BadKey, String> register = Collections.synchronizedMap(new HashMap<BadKey, String>());
 
    @Override
-   public void work(final RoutingContext context) throws Throwable {
+   public void work(final RoutingContext context) throws Exception {
       super.work(context);
       final String registerKey = context.request().getHeader(getKeyHeader());
       final BadKey badKey = new BadKey(registerKey != null ? registerKey : "defaultRegister");

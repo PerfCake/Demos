@@ -22,14 +22,19 @@ package org.perfcake.examples.weaver.worker;
 import io.vertx.ext.web.RoutingContext;
 
 /**
+ * Delays the processing of the requests by custom period.
+ *
  * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
  */
 public class DelayWorker extends NormalWorker {
 
-   private int delay;
+   /**
+    * The delay period.
+    */
+   private int delay = 0;
 
    @Override
-   public void work(final RoutingContext context) throws Throwable {
+   public void work(final RoutingContext context) throws Exception {
       try {
          Thread.sleep(delay);
       } catch (InterruptedException e) {

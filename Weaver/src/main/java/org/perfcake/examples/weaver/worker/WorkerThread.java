@@ -20,18 +20,38 @@
 package org.perfcake.examples.weaver.worker;
 
 import io.vertx.ext.web.RoutingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Queue;
 
 /**
+ * A thread processing an incoming request using a worker.
+ *
  * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
  */
 public class WorkerThread implements Runnable {
 
+   private static final Logger log = LogManager.getLogger(WorkerThread.class);
+
+   /**
+    * Queue of workers to process the requests.
+    */
    private final Queue<Worker> workers;
 
+   /**
+    * Incoming HTTP routing context.
+    */
    private final RoutingContext context;
 
+   /**
+    * Creates a new thread instance.
+    *
+    * @param workers
+    *       Queue of workers to poll from.
+    * @param context
+    *       Incoming HTTP routing context.
+    */
    public WorkerThread(final Queue<Worker> workers, final RoutingContext context) {
       this.workers = workers;
       this.context = context;
@@ -44,8 +64,7 @@ public class WorkerThread implements Runnable {
       try {
          w.work(context);
       } catch (Throwable t) {
-         System.out.println("ERROR Error processing request");
-         t.printStackTrace();
+         log.error("Error processing request: ", t);
       }
 
       workers.offer(w);

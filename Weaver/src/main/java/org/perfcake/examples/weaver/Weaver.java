@@ -19,6 +19,7 @@
  */
 package org.perfcake.examples.weaver;
 
+import org.perfcake.examples.weaver.worker.MapConfigurable;
 import org.perfcake.examples.weaver.worker.Worker;
 import org.perfcake.util.ObjectFactory;
 
@@ -26,6 +27,8 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +44,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * Main class to start the Weaver server according to the provided configuration.
+ */
 public final class Weaver {
+
+   /**
+    * My logger.
+    */
+   private static final Logger log = LogManager.getLogger(Weaver.class);
 
    @Parameter(names = { "-t", "--threads" }, description = "Number of threads, 0 = automatic based on number of workers")
    private int threads = 0;
@@ -61,10 +72,24 @@ public final class Weaver {
    @Parameter(names = { "-h", "--host" }, description = "Network host to listen on")
    private String host = "localhost";
 
+   /**
+    * Workers processing requests.
+    */
    private final Queue<Worker> workers = new ConcurrentLinkedQueue<>();
 
+   /**
+    * Thread pool executing the workers.
+    */
    private ThreadPoolExecutor executor;
 
+   /**
+    * Starts the server.
+    *
+    * @param args
+    *       Command line arguments.
+    * @throws IOException
+    *       When it was not possible to parse the configuration.
+    */
    public static void main(String[] args) throws IOException {
       final Weaver weaver = new Weaver();
       final JCommander jCommander = new JCommander(weaver, args);
@@ -83,17 +108,23 @@ public final class Weaver {
       weaver.run();
    }
 
+   /**
+    * Initializes the configuration.
+    *
+    * @throws IOException
+    *       When it was not possible to parse the configuration.
+    */
    private void init() throws IOException {
       int maxThreads = Files.lines(Paths.get(config)).collect(Collectors.summingInt(this::parseWorker));
       if (threads > maxThreads || threads == 0) {
          if (threads > maxThreads) {
-            System.out.println("ERROR Maximum possible threads is " + maxThreads + ", while you requested " + threads + ". Using " + maxThreads + ".");
+            log.warn("Maximum possible threads is " + maxThreads + ", while you requested " + threads + ". Using " + maxThreads + ".");
          }
          threads = maxThreads;
       }
 
       if (shuffle) {
-         System.out.println("INFO Shuffling workers...");
+         log.info("Shuffling workers...");
 
          final List<Worker> workersList = workers.stream().collect(Collectors.toList());
          Collections.shuffle(workersList);
@@ -101,12 +132,19 @@ public final class Weaver {
          workersList.forEach(workers::offer);
       }
 
-      System.out.println("INFO Creating executor with " + threads + " threads.");
+      log.info("Creating executor with " + threads + " threads.");
 
       executor = new ThreadPoolExecutor(threads, threads, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(), new ThreadFactoryBuilder().setDaemon(true).setNameFormat("worker-thread-%d").build());
    }
 
+   /**
+    * Parses worker configuration line.
+    *
+    * @param configLine
+    *       The configuration line.
+    * @return The number of worker instances created.
+    */
    private int parseWorker(final String configLine) {
       if (configLine != null && !configLine.isEmpty() && !configLine.startsWith("#")) {
          final String[] spaceSplit = configLine.split(" ", 2);
@@ -122,26 +160,39 @@ public final class Weaver {
          }
 
          try {
-            System.out.println("INFO Summoning " + count + " instances of " + clazz + " with properties " + properties);
+            log.info("Summoning " + count + " instances of " + clazz + " with properties " + properties);
             for (int i = 0; i < count; i++) {
-               workers.add((Worker) ObjectFactory.summonInstance(clazz, properties));
+               final Worker worker = (Worker) ObjectFactory.summonInstance(clazz, properties);
+
+               if (worker instanceof MapConfigurable) {
+                  ((MapConfigurable) worker).configure(properties);
+               }
+
+               workers.add(worker);
             }
 
             return count;
          } catch (ReflectiveOperationException e) {
-            System.out.println("ERROR Unable to parse line: " + configLine);
-            e.printStackTrace();
+            log.error("Unable to parse line '" + configLine + "': ", e);
          }
       }
 
       return 0;
    }
 
-   private void run() throws IOException {
+   /**
+    * Starts the server.
+    */
+   private void run() {
       final WeaverServer server = new WeaverServer(workers, executor, port, host);
-      System.out.println("INFO Started server listening on " + host + ":" + port);
-      System.out.println("INFO Press Ctrl+C to terminate...");
-      System.in.read();
-      server.close();
+      log.info("Started server listening on " + host + ":" + port);
+      log.info("Press Ctrl+C to terminate...");
+      try {
+         System.in.read();
+      } catch (IOException ioe) {
+         log.error("Unable to read standard input: ", ioe);
+      } finally {
+         server.close();
+      }
    }
 }

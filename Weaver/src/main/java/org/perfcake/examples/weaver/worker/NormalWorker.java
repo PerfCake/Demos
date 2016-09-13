@@ -22,20 +22,48 @@ package org.perfcake.examples.weaver.worker;
 import io.vertx.ext.web.RoutingContext;
 
 /**
+ * Just processes the requests in an ordinary way. Can provide custom status code, status message, and response.
+ *
  * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
  */
 public class NormalWorker implements Worker {
 
+   /**
+    * The status code to return.
+    */
    private int statusCode = 200;
 
+   /**
+    * The status message to return. Null means that no status message is returned.
+    */
    private String statusMessage = null;
 
+   /**
+    * Response to return. Null or empty string means that no response is returned unless mirrorRequest is set to true.
+    * This response is ignore when mirrorRequest is set to true.
+    */
+   private String response = "";
+
+   /**
+    * When set to true, the response returned is the same as the original request body. Also, the response property is ignored when
+    * this is set to true.
+    */
+   private boolean mirrorRequest = false;
+
    @Override
-   public void work(final RoutingContext context) throws Throwable {
+   public void work(final RoutingContext context) throws Exception {
       if (statusMessage != null) {
          context.response().setStatusMessage(statusMessage);
       }
-      context.response().setStatusCode(statusCode).end();
+      context.response().setStatusCode(statusCode);
+
+      if (mirrorRequest) {
+         context.response().end(context.getBodyAsString());
+      } else if (response != null && !response.isEmpty()) {
+         context.response().end(response);
+      } else {
+         context.response().end();
+      }
    }
 
    public int getStatusCode() {

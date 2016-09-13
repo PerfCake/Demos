@@ -31,16 +31,43 @@ import io.vertx.ext.web.handler.BodyHandler;
 import java.util.Queue;
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * Weaver HTTP server.
+ */
 public final class WeaverServer {
 
+   /**
+    * The HTTP server.
+    */
    private final HttpServer server;
 
+   /**
+    * The thread which runs the server.
+    */
    private final Thread serverThread;
 
+   /**
+    * Queue of workers ready to process requests.
+    */
    private final Queue<Worker> workers;
 
+   /**
+    * Thread pool executing the workers.
+    */
    private final ThreadPoolExecutor executor;
 
+   /**
+    * Initializes and starts the HTTP server.
+    *
+    * @param workers
+    *       Queue of workers.
+    * @param executor
+    *       Thread pool for executing the workers.
+    * @param port
+    *       Port where to listen.
+    * @param host
+    *       Host where to bind.
+    */
    WeaverServer(final Queue<Worker> workers, final ThreadPoolExecutor executor, final int port, final String host) {
       this.workers = workers;
       this.executor = executor;
@@ -55,11 +82,20 @@ public final class WeaverServer {
       serverThread.start();
    }
 
+   /**
+    * Handles an incoming request and submits it for execution.
+    *
+    * @param context
+    *       HTTP routing context.
+    */
    private void handle(final RoutingContext context) {
       final WorkerThread workerThread = new WorkerThread(workers, context);
       executor.submit(workerThread);
    }
 
+   /**
+    * Stops the HTTP server.
+    */
    void close() {
       server.close();
    }

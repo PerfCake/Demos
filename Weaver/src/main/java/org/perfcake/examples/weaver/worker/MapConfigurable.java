@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,20 +19,20 @@
  */
 package org.perfcake.examples.weaver.worker;
 
-import io.vertx.ext.web.RoutingContext;
+import java.util.Properties;
 
 /**
- * Worker that processes incoming request.
+ * Interface for workers with special configuration needs so that they can get the whole configuration map for their own processing.
+ *
+ * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
  */
-public interface Worker {
+public interface MapConfigurable {
 
    /**
-    * Process an incoming HTTP request.
+    * Configure the worker from the given configuration map.
     *
-    * @param context
-    *       Incoming HTTP router context to process.
-    * @throws Exception
-    *       When there was any error processing the request.
+    * @param configuration
+    *       Configuration properties.
     */
-   void work(final RoutingContext context) throws Exception;
+   void configure(final Properties configuration);
 }
