@@ -35,7 +35,7 @@ import javax.jms.TextMessage;
 @MessageDriven(mappedName = "JmsService", activationConfig = {
       @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
       @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-      @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/TestPlanner")
+      @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/TestQueue")
 })
 public class JmsServiceBean implements MessageListener {
 

@@ -1,0 +1,25 @@
+celkem 6152
+drwxr-xr-x 2 mvecera mvecera    4096 18. zář 17.46 ./
+drwxr-xr-x 4 mvecera mvecera   16384 30. srp 09.21 ../
+-rw-r--r-- 1 mvecera mvecera  138067 19. srp 02.12 artemis-commons-1.1.0.wildfly-017.jar
+-rw-r--r-- 1 mvecera mvecera  611046 19. srp 02.12 artemis-core-client-1.1.0.wildfly-017.jar
+-rw-r--r-- 1 mvecera mvecera  169624 19. srp 02.12 artemis-jms-client-1.1.0.wildfly-017.jar
+-rw-r--r-- 1 mvecera mvecera  145894 19. srp 02.12 artemis-ra-1.1.0.wildfly-017.jar
+-rw-r--r-- 1 mvecera mvecera  101208 19. srp 02.12 artemis-selector-1.1.0.wildfly-017.jar
+-rw-r--r-- 1 mvecera mvecera  233859 19. srp 02.12 commons-beanutils-1.9.2.jar
+-rw-r--r-- 1 mvecera mvecera  588337 19. srp 02.12 commons-collections-3.2.2.jar
+-rw-r--r-- 1 mvecera mvecera       0 18. zář 17.46 extlibs.txt
+-rw-r--r-- 1 mvecera mvecera  326004 19. srp 02.12 jboss-ejb-client-2.1.4.Final.jar
+-rw-r--r-- 1 mvecera mvecera   49618 19. srp 02.12 jboss-jms-api_2.0_spec-1.0.0.Final.jar
+-rw-r--r-- 1 mvecera mvecera   66802 19. srp 02.12 jboss-logging-3.3.0.Final.jar
+-rw-r--r-- 1 mvecera mvecera   82511 19. srp 02.12 jboss-marshalling-river-1.4.11.Final.jar
+-rw-r--r-- 1 mvecera mvecera  225327 19. srp 02.12 jboss-marshalling-1.4.11.Final.jar
+-rw-r--r-- 1 mvecera mvecera  166475 19. srp 02.12 jboss-remote-naming-2.0.4.Final.jar
+-rw-r--r-- 1 mvecera mvecera  277456 19. srp 02.12 jboss-remoting-4.0.21.Final.jar
+-rw-r--r-- 1 mvecera mvecera   16537 19. srp 02.12 jcl-over-slf4j-1.7.7.jbossorg-1.jar
+-rw-r--r-- 1 mvecera mvecera 2112017 19. srp 02.12 netty-all-4.0.33.Final.jar
+-rw-r--r-- 1 mvecera mvecera   52146 19. srp 02.12 netty-xnio-transport-0.1.1.Final.jar
+-rw-r--r-- 1 mvecera mvecera     156 21. bře 23.57 README.md
+-rw-r--r-- 1 mvecera mvecera   29481 19. srp 02.12 slf4j-api-1.7.7.jbossorg-1.jar
+-rw-r--r-- 1 mvecera mvecera  540615 19. srp 02.12 xnio-api-3.4.0.Final.jar
+-rw-r--r-- 1 mvecera mvecera  115215 19. srp 02.12 xnio-nio-3.4.0.Final.jar
