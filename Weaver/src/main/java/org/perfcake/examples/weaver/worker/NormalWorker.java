@@ -81,4 +81,20 @@ public class NormalWorker implements Worker {
    public void setStatusMessage(final String statusMessage) {
       this.statusMessage = statusMessage;
    }
+
+   public String getResponse() {
+      return response;
+   }
+
+   public void setResponse(final String response) {
+      this.response = response;
+   }
+
+   public boolean isMirrorRequest() {
+      return mirrorRequest;
+   }
+
+   public void setMirrorRequest(final boolean mirrorRequest) {
+      this.mirrorRequest = mirrorRequest;
+   }
 }

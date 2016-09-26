@@ -46,10 +46,11 @@ public class MaxSpeedWorker extends DelayWorker {
    @Override
    public void work(final RoutingContext context) throws Exception {
       if (System.nanoTime() - lastCalled > 1_000_000_000d / maxSpeed) {
-         lastCalled = System.nanoTime();
          super.work(context);
+         lastCalled = System.nanoTime();
       } else {
-         context.response().setStatusCode(badCode).end();
+         lastCalled = System.nanoTime();
+         context.response().setStatusCode(badCode).end("bad bad bad");
       }
    }
 

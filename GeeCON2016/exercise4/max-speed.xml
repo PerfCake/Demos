@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:8.0">
+   <run type="iteration" value="10000"/>
+   <generator class="ConstantSpeedMessageGenerator" threads="10">
+      <property name="speed" value="10000"/> <!-- Try 500, 1000 and 10000 here, watch the avergae response time -->
+   </generator>
+   <sender class="HttpSender">
+      <target>http://localhost:8080/</target>
+      <!--property name="expectedResponseCodes" value="200"/-->
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1000" />
+            <property name="foreground" value="3" />
+         </destination>
+      </reporter>
+      <reporter class="ResponseTimeStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1000" />
+            <property name="foreground" value="4" />
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message content="Hey, this is a random content!">
+         <!--validatorRef id="responseCode"/-->
+      </message>
+   </messages>
+   <!--validation>
+      <validator id="responseCode" class="ScriptValidator">
+         <property name="engine" value="groovy"/>
+         <property name="script" value="return message.payload.startsWith('Hello')"/>
+      </validator>
+   </validation-->
+</scenario>
