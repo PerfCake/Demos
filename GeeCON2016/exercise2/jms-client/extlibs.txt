@@ -1,0 +1,23 @@
+For JmsSender to work with ActiveMQ, use the following libraries.
+
+artemis-commons-1.1.0.wildfly-017.jar
+artemis-core-client-1.1.0.wildfly-017.jar
+artemis-jms-client-1.1.0.wildfly-017.jar
+artemis-ra-1.1.0.wildfly-017.jar
+artemis-selector-1.1.0.wildfly-017.jar
+commons-beanutils-1.9.2.jar
+commons-collections-3.2.2.jar
+extlibs.txt
+jboss-ejb-client-2.1.4.Final.jar
+jboss-jms-api_2.0_spec-1.0.0.Final.jar
+jboss-logging-3.3.0.Final.jar
+jboss-marshalling-river-1.4.11.Final.jar
+jboss-marshalling-1.4.11.Final.jar
+jboss-remote-naming-2.0.4.Final.jar
+jboss-remoting-4.0.21.Final.jar
+jcl-over-slf4j-1.7.7.jbossorg-1.jar
+netty-all-4.0.33.Final.jar
+netty-xnio-transport-0.1.1.Final.jar
+slf4j-api-1.7.7.jbossorg-1.jar
+xnio-api-3.4.0.Final.jar
+xnio-nio-3.4.0.Final.jar

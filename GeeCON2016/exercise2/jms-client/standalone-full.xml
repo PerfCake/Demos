@@ -465,9 +465,4 @@
         </outbound-socket-binding>
     </socket-binding-group>
 
-    <deployments>
-        <deployment name="geecon-2016.war" runtime-name="geecon-2016.war">
-            <content sha1="28437054b2eaab95c471d06955402de4f32f79c6"/>
-        </deployment>
-    </deployments>
 </server>
