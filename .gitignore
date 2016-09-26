@@ -1,8 +1,10 @@
 **/*/target
 **/*/.idea
+**/*/.vertx
 *.class
 *.iml
 *.log
+*.log.*
 
 **/*/.classpath
 **/*/.settings

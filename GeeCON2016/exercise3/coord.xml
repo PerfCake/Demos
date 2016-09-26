@@ -20,16 +20,25 @@
             <period type="iteration" value="1000" />
             <property name="foreground" value="4" />
          </destination>
+         <destination class="ChartDestination">
+            <period type="iteration" value="1000"/>
+            <property name="yAxis" value="Response Time [ms]"/>
+            <property name="group" value="response"/>
+            <property name="name" value="Response Time"/>
+            <property name="attributes" value="Average"/> <!-- Add Minimum, Maximum, Result -->
+            <property name="outputDir" value="reports/${perfcake.scenario}-charts"/>
+         </destination>
       </reporter>
       <reporter class="ClassifyingReporter">
          <property name="attribute" value="threadId" />
          <property name="prefix" value="thread_" />
          <destination class="ConsoleDestination">
-            <period type="iteration" value="100000"/>
+            <period type="percentage" value="100"/>
+            <!--period type="iteration" value="100000"/-->
             <property name="foreground" value="2" />
          </destination>
          <destination class="ChartDestination">
-            <period type="iteration" value="100000"/>
+            <period type="percentage" value="100"/>
             <property name="yAxis" value="Thread usage [messages]"/>
             <property name="group" value="threads"/>
             <property name="name" value="Thread usage"/>
@@ -42,7 +51,7 @@
          <property name="filter" value="true"/>
          <property name="maxExpectedValue" value="15000"/>
          <destination class="ChartDestination">
-            <period type="iteration" value="100000"/>
+            <period type="percentage" value="100"/>
             <property name="yAxis" value="HDR Response time [ms]"/>
             <property name="group" value="hdr"/>
             <property name="name" value="HDR Response Time"/>
