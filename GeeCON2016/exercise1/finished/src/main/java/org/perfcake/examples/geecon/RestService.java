@@ -21,10 +21,14 @@ package org.perfcake.examples.geecon;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author <a href="mailto:marvenec@gmail.com">Martin Večeřa</a>
@@ -38,5 +42,15 @@ public class RestService {
    @Produces(MediaType.APPLICATION_JSON)
    public String getSerialNumbers(@PathParam("id") final String id) {
       return "Hello: " + id;
+   }
+
+   @GET
+   @Path("/forward")
+   public Response forwardService(@HeaderParam("perfcake.correlation.id") String correlationId, @HeaderParam("targetUrl") String targetUrl) {
+      ClientBuilder.newClient().target(targetUrl).request()
+            .header("Access-Control-Request-Method", "POST")
+            .header("perfcake.correlation.id", correlationId).get();
+
+      return Response.status(200).entity("It is allright!").build();
    }
 }

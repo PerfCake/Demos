@@ -45,24 +45,30 @@ public class JmsServiceBean implements MessageListener {
    @Override
    public void onMessage(final Message message) {
       if (message instanceof TextMessage) {
+         System.out.println("Processing incoming message: " + message.toString());
          final TextMessage textMessage = (TextMessage) message;
          try {
             final String target = textMessage.getStringProperty("targetUrl");
-
+            final String correlationId = textMessage.getStringProperty("perfcake_correlation_id");
+            System.out.println("corr " + correlationId);
             if (target != null) {
                final HttpURLConnection con = (HttpURLConnection) new URL(target).openConnection();
                con.setDoOutput(true);
                con.setDoInput(false);
+               if (correlationId != null && !correlationId.isEmpty()) {
+                  con.setRequestProperty("perfcake.correlation.id", correlationId);
+               }
                con.setRequestMethod("POST");
                con.getOutputStream().write(textMessage.getText().getBytes("UTF-8"));
                con.getOutputStream().flush();
                con.getOutputStream().close();
+               System.out.println("done");
             }
          } catch (Exception e) {
             e.printStackTrace();
          }
+      } else {
+         System.out.println("Unknown message type: " + message.toString());
       }
-
-      System.out.println("Unknown message type: " + message.toString());
    }
 }
