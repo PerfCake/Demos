@@ -19,14 +19,16 @@
  */
 package org.perfcake.examples.geecon;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -37,6 +39,8 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 public class RestService {
 
+   private static List<String> correlations = new ArrayList<>();
+
    @GET
    @Path("/hello/{id:[0-9][0-9]*}")
    @Produces(MediaType.APPLICATION_JSON)
@@ -46,10 +50,16 @@ public class RestService {
 
    @GET
    @Path("/forward")
-   public Response forwardService(@HeaderParam("perfcake.correlation.id") String correlationId, @HeaderParam("targetUrl") String targetUrl) {
-      ClientBuilder.newClient().target(targetUrl).request()
-            .header("Access-Control-Request-Method", "POST")
-            .header("perfcake.correlation.id", correlationId).get();
+   public synchronized Response forwardService(@HeaderParam("perfcake.correlation.id") String correlationId, @HeaderParam("targetUrl") String targetUrl) {
+      correlations.add(correlationId);
+
+      if (correlations.size() > 3) {
+         final Invocation.Builder b = ClientBuilder.newClient().target(targetUrl).request()
+               .header("Access-Control-Request-Method", "POST");
+         correlations.forEach(c -> b.header("perfcake.correlation.id", c));
+         b.get();
+         correlations = new ArrayList<>();
+      }
 
       return Response.status(200).entity("It is allright!").build();
    }
