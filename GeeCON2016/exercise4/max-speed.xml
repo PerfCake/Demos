@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scenario xmlns="urn:perfcake:scenario:8.0">
+<scenario xmlns="urn:perfcake:scenario:7.0">
    <run type="iteration" value="10000"/>
    <generator class="ConstantSpeedMessageGenerator" threads="10">
-      <property name="speed" value="10000"/> <!-- Try 500, 1000 and 10000 here, watch the avergae response time -->
+      <property name="speed" value="500"/> <!-- Try 500, 1000 and 10000 here, watch the average response time -->
    </generator>
    <sender class="HttpSender">
       <target>http://localhost:8080/</target>

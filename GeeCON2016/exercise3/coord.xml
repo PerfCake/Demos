@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scenario xmlns="urn:perfcake:scenario:8.0">
+<scenario xmlns="urn:perfcake:scenario:7.0">
    <run type="iteration" value="100000"/>
    <generator class="DefaultMessageGenerator" threads="100"/>
    <sequences>
@@ -26,37 +26,6 @@
             <property name="group" value="response"/>
             <property name="name" value="Response Time"/>
             <property name="attributes" value="Average"/> <!-- Add Minimum, Maximum, Result -->
-            <property name="outputDir" value="reports/${perfcake.scenario}-charts"/>
-         </destination>
-      </reporter>
-      <reporter class="ClassifyingReporter">
-         <property name="attribute" value="threadId" />
-         <property name="prefix" value="thread_" />
-         <destination class="ConsoleDestination">
-            <period type="percentage" value="100"/>
-            <!--period type="iteration" value="100000"/-->
-            <property name="foreground" value="2" />
-         </destination>
-         <destination class="ChartDestination">
-            <period type="percentage" value="100"/>
-            <property name="yAxis" value="Thread usage [messages]"/>
-            <property name="group" value="threads"/>
-            <property name="name" value="Thread usage"/>
-            <property name="attributes" value="thread*"/>
-            <property name="type" value="bar"/>
-            <property name="outputDir" value="reports/${perfcake.scenario}-charts"/>
-         </destination>
-      </reporter>     
-      <reporter class="ResponseTimeHistogramReporter">
-         <property name="filter" value="true"/>
-         <property name="maxExpectedValue" value="15000"/>
-         <destination class="ChartDestination">
-            <period type="percentage" value="100"/>
-            <property name="yAxis" value="HDR Response time [ms]"/>
-            <property name="group" value="hdr"/>
-            <property name="name" value="HDR Response Time"/>
-            <property name="attributes" value="perc*"/>
-            <property name="type" value="bar"/>
             <property name="outputDir" value="reports/${perfcake.scenario}-charts"/>
          </destination>
       </reporter>

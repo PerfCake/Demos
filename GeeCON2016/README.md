@@ -16,16 +16,23 @@ Preparation before the session:
 4. Make sure you can execute the following command without an error in your PerfCake installation (requires Internet connection):
    $ bin/perfcake.sh -s http
 
-This is enough for exercise no. 2 -4. Exercise 1 requires some more configuration and is mostly useful for Java developers. The same principle can be applied 
-to any programming language but you can get the idea simply by observing the demonstration.
+This is enough for exercise no. 3 & 4. 
+Exercises 1 & 2 require a running application server to host a sample service. 
 
-Steps to get prepared for Exercise 1:
+Steps to get prepared for Exercise 1 & 2:
 1. Make sure you have Apache Maven >=3.3.9 installed and working in your terminal (```maven -version``` command tells you the correct version).
 2. Download WildFly (Application Server 10.1.0.Final)[http://wildfly.org/downloads/] and make sure it works by running ```bin/standalone.sh``` in its installation
 directory (the server should print out no error and you can terminate it by Ctrl+C).
 3. In the directory where did you check out the demo sources, go to ```GeeCON2016/exercise1/finished```
 and run ```mvn clean install -DskipTests```. This downloads many resources which will save us time and
 precious download capacity during the coding session.
+
+In the Exercises we will refer to the locations where you have placed all the resources and tools as follows:
+
+ * `$DEMOS_HOME` - location where you did checkout these sources (e.g. `/home/user/Demos`)
+ * `$PERFCAKE_HOME` - location with unzipped PerfCake 7.1 (e.g. `/home/user/perfcake-7.1`)
+ * `$WEAVER_HOME` - location with unzipped Weaver (e.g. `/user/home/weaver-1.0`)
+ * `$WILDFLY_HOME` - location with unzipped WildFly 10.1.0.Final (e.g. `/users/home/wildfly-10.1.0.Final`)
 
 Demos
 =====
@@ -34,8 +41,9 @@ Scenario 1: Include Performance testing into your application for daily verifica
 ------------------------------------------------------------------------------------
 
 In a few steps we will add PerfCake performance testing scenario to a JavaEE Maven based application.
+Configure once, run always as part of integration tests.
 
-See ```exercise1/README.md```.
+See ```exercise1/README.md``` for instructions on completing this exercise.
 
 Scenario 2: Complex system testing
 ----------------------------------
@@ -46,7 +54,22 @@ will be able to measure the performance.
 
 This cover a use case where there are several (micro-)services connected together and communicating using various protocols.
 
+See ```exercise2/README.md``` for instructions on completing this exercise.
+
 Scenario 3: Monitor threads activity and address coordinated omission problem
 -----------------------------------------------------------------------------
 
-TBD
+We will create a scenario for measuring response time of a simple service. By running an ordinary
+test, everything will look good. But when we start looking in more detail, we will reveal some
+serious problems that only PerfCake can help us detect.
+
+See ```exercise3/README.md``` for instructions on completing this exercise.
+
+Scenario 4: Overwhelmed service
+-------------------------------
+
+First, we will try to search for the optimal speed of requests for our sample service. We realize
+there is a significant improvement when we keep increasing the speed. But is it really the case?
+PerfCake can tell us the truth!
+
+See ```exercise4/README.md``` for instructions on completing this exercise.
