@@ -15,7 +15,7 @@ The implementation is really dummy and one should and developing a synchronized 
 a very clever idea. However, we are demonstrating the concept of aggregating messages and sending them
 somewhere else.
 
-Examine `http2.xml` performance test scenario and copy it to `$PERFCAKE_HOME/resources/scenarios`.
+Examine `$DEMOS_HOME/GeeCON2016/exercise2/http2.xml` performance test scenario and copy it to `$PERFCAKE_HOME/resources/scenarios`.
 
 Run the scenario by:
  
