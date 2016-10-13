@@ -20,7 +20,7 @@ There is an integration test that can deploy the application to an application s
 verify that it is available. To give it a try, we first start the application server.
 
 Open a separate terminal window and run
-```$WILDFLY_HOME/bin/standalone.sh```
+`$WILDFLY_HOME/bin/standalone.sh`
 
 The server starts in a bit. Then switch to `$DEMOS_HOME/GeeCON2016/exercise1/exercise` and run:
 
@@ -34,7 +34,7 @@ Copy `$DEMOS_HOME/GeeCON2016/exercise1/finished/src/test/resources/perfcake` to 
 
 Now we'll add the PerfCake plugin to `$DEMOS_HOME/GeeCON2016/exercise1/exercise/pom.xml`:
 
-```
+```xml
    <plugin>
       <groupId>org.perfcake</groupId>
       <artifactId>perfcake-maven-plugin</artifactId>
