@@ -24,7 +24,7 @@ Delete the result charts so that they do not get mixed with the new ones (remove
 
 And add one more reporter to `$PERFCAKE_HOME/resources/scenarios/coord.xml` so that we see how the threads are utilized:
 
-```
+```xml
    <reporter class="ClassifyingReporter">
       <property name="attribute" value="threadId" />
       <property name="prefix" value="thread_" />
@@ -59,7 +59,7 @@ of original responses to figure out. That that would exhaust system resources. B
  
 We will add one more reporter to `$PERFCAKE_HOME/resources/scenarios/coord.xml`:
 
-```
+```xml
    <reporter class="ResponseTimeHistogramReporter">
       <property name="filter" value="true"/>
       <property name="maxExpectedValue" value="15000"/>
