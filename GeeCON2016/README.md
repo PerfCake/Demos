@@ -20,7 +20,7 @@ This is enough for exercise no. 3 & 4.
 Exercises 1 & 2 require a running application server to host a sample service. 
 
 Steps to get prepared for Exercise 1 & 2:
-1. Make sure you have Apache Maven >=3.3.9 installed and working in your terminal (```maven -version``` command tells you the correct version).
+1. Make sure you have Apache Maven >=3.3.9 installed and working in your terminal (```mvn -version``` command tells you the correct version).
 2. Download WildFly (Application Server 10.1.0.Final)[http://wildfly.org/downloads/] and make sure it works by running ```bin/standalone.sh``` in its installation
 directory (the server should print out no error and you can terminate it by Ctrl+C).
 3. In the directory where did you check out the demo sources, go to ```GeeCON2016/exercise1/finished```
