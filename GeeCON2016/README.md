@@ -1,9 +1,7 @@
 GeeCON 2016 Live coding session
 ===============================
 
-Instructions status: DRAFT - will be marked as final no later than 24 hours before the conference start
-
-Please do not follow the instructions until you can see the final status!
+Instructions status: FINAL
 
 Prerequisities:
 1. You have JDK 8 installed and working in your terminal (```java -version``` command tells you the correct version).
