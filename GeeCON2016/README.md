@@ -35,7 +35,7 @@ In the Exercises we will refer to the locations where you have placed all the re
 Demos
 =====
 
-Scenario 1: Include Performance testing into your application for daily verification
+Exercise 1: Include Performance testing into your application for daily verification
 ------------------------------------------------------------------------------------
 
 In a few steps we will add PerfCake performance testing scenario to a JavaEE Maven based application.
@@ -43,7 +43,7 @@ Configure once, run always as part of integration tests.
 
 See ```exercise1/README.md``` for instructions on completing this exercise.
 
-Scenario 2: Complex system testing
+Exercise 2: Complex system testing
 ----------------------------------
 
 We will develop a performance test scenario where we will read a response from a different message
@@ -54,7 +54,7 @@ This cover a use case where there are several (micro-)services connected togethe
 
 See ```exercise2/README.md``` for instructions on completing this exercise.
 
-Scenario 3: Monitor threads activity and address coordinated omission problem
+Exercise 3: Monitor threads activity and address coordinated omission problem
 -----------------------------------------------------------------------------
 
 We will create a scenario for measuring response time of a simple service. By running an ordinary
@@ -63,7 +63,7 @@ serious problems that only PerfCake can help us detect.
 
 See ```exercise3/README.md``` for instructions on completing this exercise.
 
-Scenario 4: Overwhelmed service
+Exercise 4: Overwhelmed service
 -------------------------------
 
 First, we will try to search for the optimal speed of requests for our sample service. We realize
