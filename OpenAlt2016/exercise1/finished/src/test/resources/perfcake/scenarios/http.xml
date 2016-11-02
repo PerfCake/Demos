@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:7.0">
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:5000}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:10}"/>
+   <sequences>
+      <sequence class="PrimitiveNumberSequence" id="seq.id" />
+   </sequences>
+   <sender class="HttpSender">
+      <target>http://${server.host:localhost}:${server.port:8080}/openalt-2016/rest/service/hello/${seq.id}</target>
+      <property name="method" value="GET"/>
+   </sender>
+   <reporting>
+      <reporter class="IterationsPerSecondReporter">
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000"/>
+         </destination>
+         <destination class="CsvDestination">
+            <period type="iteration" value="1000"/>
+            <property name="path" value="target/perfcake-results-${perfcake.run.timestamp}.csv"/>
+         </destination>
+      </reporter>
+   </reporting>
+</scenario>
