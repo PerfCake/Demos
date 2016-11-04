@@ -4,9 +4,11 @@ OpenAlt 2016 Live coding session
 Instructions status: FINAL
 
 Prerequisities:
+
 1. You have JDK 8 installed and working in your terminal (```java -version``` command tells you the correct version).
 
 Preparation before the session:
+
 1. Checkout these demo sources by ```git clone https://github.com/PerfCake/Demos.git```
 2. Download and unpack the binary distribution of (Weaver application)[https://github.com/PerfCake/Weaver/releases] that will serve as a broken service for us 
 (make sure it works by running ```bin/weaver.sh -c projects/example.cfg``` or ```bin\weaver.bat -c projects\example.cfg``` in its installation directory, terminate it by Ctrl+C).
@@ -18,6 +20,7 @@ This is enough for exercise no. 3 & 4.
 Exercises 1 & 2 require a running application server to host a sample service. 
 
 Steps to get prepared for Exercise 1 & 2:
+
 1. Make sure you have Apache Maven >=3.3.9 installed and working in your terminal (```mvn -version``` command tells you the correct version).
 2. Download WildFly (Application Server 10.1.0.Final)[http://wildfly.org/downloads/] and make sure it works by running ```bin/standalone.sh``` in its installation
 directory (the server should print out no error and you can terminate it by Ctrl+C).
