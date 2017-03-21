@@ -5,17 +5,17 @@ We will use the application from Exercise 1 as a sample service.
 
 So make sure your WildFly server is still running as described in Exercise 1 README.md.
 
-Switch to `$DEMOS_HOME/OpenAlt2016/exercise1/finished` and run `mvn wildfly:deploy`.
+Switch to `$DEMOS_HOME/FelCvut2017/part2/exercise1/finished` and run `mvn wildfly:deploy`.
 
 The sample application should be up and running. Its implementation can be seen in 
-`$DEMOS_HOME/OpenAlt2016/exercise1/finished/src/main/java/org/perfcake/examples/OpenAlt/RestService.java`,
+`$DEMOS_HOME/FelCvut2017/part2/exercise1/finished/src/main/java/org/perfcake/demos/cvut/RestService.java`,
 method `forwardService()`.
 
 The implementation is really dummy and one should and developing a synchronized service method is not
 a very clever idea. However, we are demonstrating the concept of aggregating messages and sending them
 somewhere else.
 
-Examine `$DEMOS_HOME/OpenAlt2016/exercise2/http2.xml` performance test scenario and copy it to `$PERFCAKE_HOME/resources/scenarios`.
+Examine `$DEMOS_HOME/FelCvut2017/part2/exercise2/http2.xml` performance test scenario and copy it to `$PERFCAKE_HOME/resources/scenarios`.
 
 Run the scenario by:
  
