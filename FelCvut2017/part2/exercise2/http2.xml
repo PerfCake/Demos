@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:8.0">
+   <properties>
+      <property name="listener.url" value="localhost:9090"/>
+   </properties>
+   <run type="iteration" value="10000"/>
+   <generator class="DefaultMessageGenerator" threads="10"/>
+   <sender class="HttpSender">
+      <target>http://localhost:8080/openalt-2016/rest/service/forward</target>
+      <property name="method" value="GET"/>
+   </sender>
+   <receiver class="HttpReceiver" threads="10">
+      <correlator class="GenerateHeaderCorrelator"/>
+      <source>${listener.url}</source>
+      <property name="httpResponse" value="Heyda!"/>
+   </receiver>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1000"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message content="Hey, this is a random content!">
+         <header name="targetUrl" value="http://${listener.url}/"/>
+      </message>
+   </messages>
+</scenario>
