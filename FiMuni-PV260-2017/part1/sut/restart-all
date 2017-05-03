@@ -1,0 +1,8 @@
+#!/bin/bash
+export JPROFILER_HOME=/opt/jprofiler9
+
+mvn clean package && java -agentpath:$JPROFILER_HOME/bin/linux-x64/libjprofilerti.so=port=8849 -javaagent:$(pwd)/target/lib/perfcake-agent-7.4.jar -Xms256m -Xmx256m -jar target/sut-1.0-SNAPSHOT.jar
+
+#mvn clean package && java -javaagent:$(pwd)/target/lib/perfcake-agent-7.4.jar -Xms256m -Xmx256m -jar target/sut-1.0-SNAPSHOT.jar
+
+#mvn clean package && java -jar target/app1-1.0-SNAPSHOT.jar
