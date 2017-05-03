@@ -12,13 +12,13 @@
       <reporter class="ThroughputStatsReporter">
          <destination class="ConsoleDestination">
             <period type="iteration" value="1000" />
-            <property name="foreground" value="3" />
+            <property name="foreground" value="11" />
          </destination>
       </reporter>
       <reporter class="ResponseTimeStatsReporter">
          <destination class="ConsoleDestination">
             <period type="iteration" value="1000" />
-            <property name="foreground" value="4" />
+            <property name="foreground" value="14" />
          </destination>
       </reporter>
    </reporting>
