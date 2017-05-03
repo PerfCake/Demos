@@ -17,6 +17,7 @@
          </destination>
          <destination class="ConsoleDestination">
             <period type="time" value="1000"/>
+            <property name="foreground" value="11"/>
          </destination>
          <destination class="ChartDestination">
             <period type="time" value="1000"/>
@@ -35,6 +36,7 @@
          </destination>
          <destination class="ConsoleDestination">
             <period type="time" value="1000"/>
+            <property name="foreground" value="14"/>
          </destination>
          <destination class="ChartDestination">
             <period type="time" value="1000"/>
