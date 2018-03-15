@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:7.0">
+   <run type="iteration" value="100000"/>
+   <generator class="DefaultMessageGenerator" threads="100"/>
+   <sequences>
+      <sequence class="ThreadIdSequence" id="threadId" />
+   </sequences>
+   <sender class="HttpSender">
+      <target>http://localhost:8080/</target>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1000" />
+            <property name="foreground" value="11" />
+         </destination>
+      </reporter>
+      <reporter class="ResponseTimeStatsReporter">
+         <destination class="ConsoleDestination">
+            <period type="iteration" value="1000" />
+            <property name="foreground" value="14" />
+         </destination>
+         <destination class="ChartDestination">
+            <period type="iteration" value="1000"/>
+            <property name="yAxis" value="Response Time [ms]"/>
+            <property name="group" value="response"/>
+            <property name="name" value="Response Time"/>
+            <property name="attributes" value="Average"/> <!-- Add Minimum, Maximum, Result -->
+            <property name="outputDir" value="reports/${perfcake.scenario}-charts"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message content="Hey, this is a random content!">
+      </message>
+   </messages>
+</scenario>
