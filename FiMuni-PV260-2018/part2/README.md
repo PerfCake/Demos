@@ -10,9 +10,9 @@ Prerequisities:
 Preparation before the session:
 
 1. Checkout these demo sources by ```git clone https://github.com/PerfCake/Demos.git```
-2. Download and unpack the binary distribution of (Weaver application)[https://github.com/PerfCake/Weaver/releases] that will serve as a broken service for us 
+2. Download and unpack the binary distribution of [Weaver application](https://github.com/PerfCake/Weaver/releases) that will serve as a broken service for us 
 (make sure it works by running ```bin/weaver.sh -c projects/example.cfg``` or ```bin\weaver.bat -c projects\example.cfg``` in its installation directory, terminate it by Ctrl+C).
-2. Download (PerfCake 7.5 distribution)[https://github.com/PerfCake/PerfCake/releases/download/v7.5/perfcake-v7.5-bin.zip] and unzip it into any location.
+2. Download [PerfCake 7.5 distribution](https://github.com/PerfCake/PerfCake/releases/download/v7.5/perfcake-v7.5-bin.zip) and unzip it into any location.
 4. Make sure you can execute the following command without an error in your PerfCake installation (requires Internet connection):
    $ bin/perfcake.sh -s http
 
@@ -22,7 +22,7 @@ Exercises 1 & 2 require a running application server to host a sample service.
 Steps to get prepared for Exercise 1 & 2:
 
 1. Make sure you have Apache Maven >=3.3.9 installed and working in your terminal (```mvn -version``` command tells you the correct version).
-2. Download WildFly (Application Server 10.1.0.Final)[http://wildfly.org/downloads/] and make sure it works by running ```bin/standalone.sh``` in its installation
+2. Download WildFly [Application Server 10.1.0.Final](http://wildfly.org/downloads/) and make sure it works by running ```bin/standalone.sh``` in its installation
 directory (the server should print out no error and you can terminate it by Ctrl+C).
 3. In the directory where did you check out the demo sources, go to ```FiMuni-PV260-2018/part2/exercise1/finished```
 and run ```mvn clean install -DskipTests```. This downloads many resources which will save us time and
