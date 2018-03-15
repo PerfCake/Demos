@@ -12,7 +12,7 @@ Preparation before the session:
 1. Checkout these demo sources by ```git clone https://github.com/PerfCake/Demos.git```
 2. Download and unpack the binary distribution of (Weaver application)[https://github.com/PerfCake/Weaver/releases] that will serve as a broken service for us 
 (make sure it works by running ```bin/weaver.sh -c projects/example.cfg``` or ```bin\weaver.bat -c projects\example.cfg``` in its installation directory, terminate it by Ctrl+C).
-2. Download (PerfCake 7.5 distribution)[https://www.perfcake.org/download/perfcake-7.5-bin.zip] and unzip it into any location.
+2. Download (PerfCake 7.5 distribution)[https://github.com/PerfCake/PerfCake/releases/download/v7.5/perfcake-v7.5-bin.zip] and unzip it into any location.
 4. Make sure you can execute the following command without an error in your PerfCake installation (requires Internet connection):
    $ bin/perfcake.sh -s http
 
